@@ -8,4 +8,5 @@ compilerOpts.linux = -I/usr/include -I/usr/include/openssl  -I/usr/include/x86_6
 
 # `dpkg-query -L libssl-dev`
 linkerOpts.linux = -L/usr/lib/x86_64-linux-gnu -lssl
+linkerOpts.osx = -lssl -lcrypto
 #dpkg-query -L libssl-dev

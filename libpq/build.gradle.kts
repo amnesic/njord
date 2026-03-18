@@ -28,12 +28,21 @@ kotlin {
     nativeTarget.apply {
         compilations.all {
             cinterops {
-                val libpq by creating
+                val libpq by creating {
+                    if (NativeLibResolver.isMacOS) {
+                        NativeLibResolver.resolve("libpq")?.let { flags ->
+                            compilerOpts(*flags.compilerOpts.toTypedArray())
+                        }
+                    }
+                }
             }
         }
         binaries {
             staticLib {
                 baseName = "pq"
+                if (NativeLibResolver.isMacOS) {
+                    linkerOpts(*NativeLibResolver.macOsLinkerPaths.toTypedArray())
+                }
             }
         }
     }

@@ -4,7 +4,7 @@ import File
 import io.madrona.njord.resources
 import kotlinx.cinterop.ExperimentalForeignApi
 import kotlinx.cinterop.toKString
-import libgdal.realpath
+import platform.posix.realpath
 import platform.posix.free
 
 

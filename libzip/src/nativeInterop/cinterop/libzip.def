@@ -7,3 +7,5 @@ compilerOpts.linux = -I/usr/include -I/usr/include/x86_64-linux-gnu
 
 # `dpkg-query -L libzip4`
 linkerOpts.linux = -L/usr/lib/x86_64-linux-gnu -lzip
+
+linkerOpts.osx = -lzip
