@@ -25,7 +25,7 @@ object NativeLibResolver {
         paths.joinToString(":")
     }
 
-    /** Collected linker search paths (-L...) from all resolved libraries, for use in binary config */
+    /** Collected linker search paths (-L...) and rpath entries from all resolved libraries, for use in binary config */
     val macOsLinkerPaths = mutableSetOf<String>()
 
     fun resolve(pkgName: String): LibFlags? {
@@ -39,6 +39,11 @@ object NativeLibResolver {
             linkerOpts = libs?.split(" ")?.filter { it.isNotBlank() } ?: emptyList()
         )
         macOsLinkerPaths.addAll(flags.linkerPaths)
+        // Add -rpath for each -L so the dynamic linker finds dylibs at runtime
+        flags.linkerPaths.forEach { lPath ->
+            val dir = lPath.removePrefix("-L")
+            macOsLinkerPaths.add("-Wl,-rpath,$dir")
+        }
         return flags
     }
 }
