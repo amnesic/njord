@@ -2,3 +2,5 @@
 headers = gd.h
 compilerOpts.linux = -I/usr/include -I/usr/include/x86_64-linux-gnu
 linkerOpts.linux = -L/usr/lib/x86_64-linux-gnu -lgd
+
+linkerOpts.osx = -lgd

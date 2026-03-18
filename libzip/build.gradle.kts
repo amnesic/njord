@@ -27,12 +27,21 @@ kotlin {
     nativeTarget.apply {
         compilations.getByName("main") {
             cinterops {
-                val libzip by creating
+                val libzip by creating {
+                    if (NativeLibResolver.isMacOS) {
+                        NativeLibResolver.resolve("libzip")?.let { flags ->
+                            compilerOpts(*flags.compilerOpts.toTypedArray())
+                        }
+                    }
+                }
             }
         }
         binaries {
             staticLib {
                 baseName = "zip"
+                if (NativeLibResolver.isMacOS) {
+                    linkerOpts(*NativeLibResolver.macOsLinkerPaths.toTypedArray())
+                }
             }
         }
     }

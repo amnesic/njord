@@ -1,3 +1,5 @@
+import java.io.File
+
 plugins {
     kotlin("multiplatform")
     kotlin("plugin.serialization")
@@ -24,14 +26,38 @@ kotlin {
 
         compilations.getByName("main") {
             cinterops {
-                val libssl by creating
-                val libgd by creating
+                val libssl by creating {
+                    if (NativeLibResolver.isMacOS) {
+                        NativeLibResolver.resolve("openssl")?.let { flags ->
+                            // The .def expects bare headers (hmac.h, evp.h) which live in include/openssl/.
+                            // But those headers internally use #include <openssl/...>, so we need both paths.
+                            val opts = flags.compilerOpts.toMutableList()
+                            flags.compilerOpts.filter { it.startsWith("-I") }.forEach { opt ->
+                                val dir = opt.removePrefix("-I")
+                                if (File("$dir/openssl/hmac.h").exists()) {
+                                    opts.add("-I$dir/openssl")
+                                }
+                            }
+                            compilerOpts(*opts.toTypedArray())
+                        }
+                    }
+                }
+                val libgd by creating {
+                    if (NativeLibResolver.isMacOS) {
+                        NativeLibResolver.resolve("gdlib")?.let { flags ->
+                            compilerOpts(*flags.compilerOpts.toTypedArray())
+                        }
+                    }
+                }
                 val libnotify by creating
             }
         }
         binaries {
             executable {
                 entryPoint = "io.madrona.njord.main"
+                if (NativeLibResolver.isMacOS) {
+                    linkerOpts(*NativeLibResolver.macOsLinkerPaths.toTypedArray())
+                }
                 runTaskProvider?.configure {
                     argumentProviders.add(CommandLineArgumentProvider {
                         listOf(project.file("./src/nativeMain/resources").absolutePath)
@@ -40,6 +66,9 @@ kotlin {
             }
             executable("ingest") {
                 entryPoint = "io.madrona.njord.ingest.ingestMain"
+                if (NativeLibResolver.isMacOS) {
+                    linkerOpts(*NativeLibResolver.macOsLinkerPaths.toTypedArray())
+                }
                 runTaskProvider?.configure {
                     argumentProviders.add(CommandLineArgumentProvider {
                         listOf(project.file("./src/nativeMain/resources").absolutePath)

@@ -1,4 +1,5 @@
 compilerOpts.linux = -I/usr/include -I/usr/include/x86_64-linux-gnu
+compilerOpts.osx =
 ---
 #include <stdlib.h>
 
@@ -20,8 +21,24 @@ static int njord_inotify_read_events(int fd, char* buf, int len) {
 }
 #else
 /* Non-Linux stubs — inotify unavailable; Kotlin code falls back to polling */
+#define IN_CREATE   0x00000100
+#define IN_DELETE    0x00000200
+#define IN_MODIFY    0x00000002
+#define IN_MOVED_FROM 0x00000040
+#define IN_MOVED_TO  0x00000080
+
+struct inotify_event {
+    int wd;
+    unsigned int mask;
+    unsigned int cookie;
+    unsigned int len;
+    char name[1];
+};
+
 static int njord_inotify_init() { return -1; }
 static int njord_inotify_add_watch_create(int fd, const char* path) { return -1; }
+static int inotify_add_watch(int fd, const char* path, unsigned int mask) { return -1; }
+static int inotify_rm_watch(int fd, int wd) { return -1; }
 static int njord_inotify_rm(int fd, int wd) { return 0; }
 static int njord_inotify_read_events(int fd, char* buf, int len) { return 0; }
 #endif

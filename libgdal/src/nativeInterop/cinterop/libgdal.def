@@ -7,3 +7,6 @@ compilerOpts.linux = -I/usr/include -I/usr/include/x86_64-linux-gnu -I/usr/inclu
 
 # `dpkg-query -L libgdal30`
 linkerOpts.linux = -L/usr/lib -lgdal
+
+compilerOpts.osx = -D_FILE_OFFSET_BITS=64
+linkerOpts.osx = -lgdal
