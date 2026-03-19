@@ -33,7 +33,7 @@ kotlin {
     nativeTarget.apply {
         compilations.getByName("main") {
             cinterops {
-                val libgdal by creating {
+                @Suppress("unused") val libgdal by creating {
                     if (NativeLibResolver.isMacOS) {
                         NativeLibResolver.resolve("gdal")?.let { flags ->
                             // Handle flat header layout (Conda: include/gdal.h instead of include/gdal/gdal.h)
@@ -44,6 +44,8 @@ kotlin {
                                 val compatDir = File(project.layout.buildDirectory.asFile.get(), "gdal-include-compat/gdal")
                                 if (!compatDir.exists()) {
                                     compatDir.parentFile.mkdirs()
+                                    // Remove broken symlink if it exists at the filesystem level
+                                    Files.deleteIfExists(compatDir.toPath())
                                     Files.createSymbolicLink(
                                         compatDir.toPath(),
                                         Paths.get(includeDir)
