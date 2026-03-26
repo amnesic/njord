@@ -19,8 +19,8 @@ svg_dir = os.path.join(base_dir, "svg")
 svg_t_dir = os.path.join(svg_dir, "tmp")
 sprites = os.path.join(base_dir, "simplified")
 sprites2x = os.path.join(base_dir, "simplified2x")
-sprite_sheet_dir = os.path.join(base_dir, "../chart_server/src/main/resources/www/sprites")
-colors = os.path.join(base_dir, "../chart_server/src/main/resources/colors.json")
+sprite_sheet_dir = os.path.join(base_dir, "../server/src/nativeMain/resources/www/sprites")
+colors = os.path.join(base_dir, "../server/src/nativeMain/resources/colors.json")
 
 # https://registry.iho.int/portrayal/list.do?type=5
 
@@ -36,7 +36,8 @@ wide_pattern = [
     [0, 0],
 ]
 
-patterns = {"VEGATN04P": standard_pattern,
+patterns = {"DRGARE01P": standard_pattern,
+            "VEGATN04P": standard_pattern,
             "VEGATN03P": standard_pattern,
             "NODATA03P": standard_pattern,
             "SNDWAV01P": wide_pattern,
