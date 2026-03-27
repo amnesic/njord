@@ -150,8 +150,8 @@ class Topmar : Layerable() {
             iconOffset = Offset.EvalEq(
                 key = "_PTFM",
                 value = TopmarPlatform.RIGID.name,
-                eq = Offset.Coord(x = 0f, y = 0f), // RIGID
-                neq = Offset.Coord(x = 0f, y = -8f), // FLOATING
+                eq = Offset.Coord(x = 0f, y = 0f), // RIGID - centered on beacon
+                neq = Offset.Coord(x = 5f, y = -8f), // FLOATING - right offset to match SVG pivot (currently unused: _PTFM always RIGID due to missing associations)
             )
         ),
     )

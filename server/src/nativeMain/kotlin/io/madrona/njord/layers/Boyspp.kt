@@ -28,7 +28,7 @@ class Boyspp : Boylat() {
                 }
                 else -> false
             }
-        } ?: boyshp(feature)
+        } ?: symbolByShapeAndColor(feature)
     }
 
     override fun layers(options: LayerableOptions) = sequenceOf(
