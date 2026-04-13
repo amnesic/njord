@@ -233,7 +233,8 @@ abstract class Layerable(
 
     fun areaLayerWithFillColor(
         color: Color,
-        theme: Theme
+        theme: Theme,
+        opacity: Float? = null,
     ): Layer {
         return Layer(
             id = "${key}_fill_${++nextId}",
@@ -241,7 +242,8 @@ abstract class Layerable(
             sourceLayer = sourceLayer,
             filter = Filters.eqTypePolyGon,
             paint = Paint(
-                fillColor = colorFrom(color, theme).json
+                fillColor = colorFrom(color, theme).json,
+                fillOpacity = opacity
             ),
         )
     }
