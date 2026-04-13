@@ -23,7 +23,7 @@ Gradle with Kotlin DSL. Use `./gradlew` at the root.
 
 ```bash
 # 1. Start the database (PostGIS)
-cd chart_server_db && docker-compose up
+cd chart_server_db && podman-compose up
 
 # 2. Build frontend
 ./gradlew :web:jsBrowserDistribution
@@ -34,11 +34,11 @@ cd chart_server_db && docker-compose up
 # 3b. Option - build and run production
 ./gradlew :server:linkReleaseExecutableArch
 CHART_SERVER_OPTS='{ "webStaticContent": "./web/build/dist/js/productionExecutable" }' \
-./server/build/bin/native/releaseExecutable/server.kexe ./server/src/nativeMain/resources
+./server/build/bin/arch/releaseExecutable/server.kexe ./server/src/nativeMain/resources
 
 # 3c. Option - build and run in container
 ./gradlew makeImg
-docker run --rm --network host ghcr.io/manimaul/njord-chart-server:<version>
+podman run --rm --network host ghcr.io/manimaul/njord-chart-server:<version>
 
 
 # 4. Frontend with hot-reload (separate terminal)
@@ -66,7 +66,7 @@ docker run --rm --network host ghcr.io/manimaul/njord-chart-server:<version>
 ### Containerization & Deployment
 
 ```bash
-./gradlew :makeImg      # Build Docker image
+./gradlew :makeImg      # Build Podman image
 ./gradlew :pubImg       # Push image to registry
 ./gradlew :k8sApply     # Deploy to Kubernetes
 ./gradlew :deploy       # Full pipeline (build → push → deploy)
@@ -103,18 +103,35 @@ docker run --rm --network host ghcr.io/manimaul/njord-chart-server:<version>
 
 ### Database
 
-PostgreSQL 13 + PostGIS. For development, run via Docker Compose in `chart_server_db/`. The `features` table stores GeoJSON FeatureCollections indexed by chart coverage polygon for spatial queries.
+PostgreSQL 13 + PostGIS. For development, run via Podman Compose in `chart_server_db/`. The `features` table stores GeoJSON FeatureCollections indexed by chart coverage polygon for spatial queries.
 
 ## System Requirements
 
 - **openjdk-17-jre-headless** — required for Gradle and Kotlin/Native toolchain
 - **libgdal-dev** — Geospatial Data Abstraction Library - Development files
 - **libpq-dev** - header files for libpq5 (PostgreSQL library)
-- **PostGIS 13** — run in Docker for development (see `chart_server_db/README.md`)
+- **PostGIS 13** — run in Podman for development (see `chart_server_db/README.md`)
 
 ## Important Notes
 
 - **GitHub Packages** authentication uses `GH_USER` and `GH_TOKEN` environment variables
 - The `docs/DESIGN.md` links reference an older JVM implementation; the current codebase is Kotlin/Native
-- Platform targets: Linux x64/ARM64 (backend), JS (frontend / browser) 
-- Targets not used: macOS x64/ARM64, Windows x64 (Native)
+- Platform targets: macOS x64/ARM64, Linux x64/ARM64 (backend), JS (frontend / browser) 
+- Targets not used: Windows x64 (Native)
+
+## Development on MacOS
+
+Required packages
+```shell
+brew install gdal libpq gd libzip openssl@3 openjdk@21
+```
+
+Useful packages 
+```shell
+brew install podman podman-compose
+```
+
+You'll need to set memory to at leas 8192 to build container image(s) 
+```shell
+podman machine set --memory 8192 
+```

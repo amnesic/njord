@@ -323,7 +323,6 @@ enum class Sprite {
     LOCMAG01,
     LOWACC01,
     MAGVAR01,
-    MARCUL01P,
     MARCUL02,
     MARCUL02P,
     MARSHES1P,

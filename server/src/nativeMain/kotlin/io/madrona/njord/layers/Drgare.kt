@@ -13,9 +13,6 @@ import io.madrona.njord.model.*
  * Acronym: DRGARE
  *
  * Code: 46
- *
- * S-52 symbolization: depth-based fill color (like DEPARE) + AP(DRGARE01) dot pattern overlay
- * + dashed boundary line in CHGRD.
  */
 class Drgare(
     private val config: ChartsConfig = Singletons.config
@@ -29,34 +26,27 @@ class Drgare(
         Color.DEPDW,
     )
 
-    override fun layers(options: LayerableOptions): Sequence<Layer> {
-        return sequenceOf(
-            areaLayerWithFillColor(theme = options.theme, options = areaFillColors),
-            areaLayerWithFillPattern(Sprite.DRGARE01P),
-            lineLayerWithColor(
-                theme = options.theme,
-                color = Color.CHGRD,
-                style = LineStyle.DashLine,
-                width = 0.5f
-            ),
-        )
-    }
-
     override suspend fun preTileEncode(feature: ChartFeature) {
-        var ac = Color.DEPMD
-        feature.props.floatValue("DRVAL1")?.let { shallowRange ->
-            val deepRange = feature.props.floatValue("DRVAL2") ?: shallowRange
+        var ac = Color.DEPVS
+        feature.props.floatValue("DRVAL1")?.let { drval1 ->
             ac = when {
-                shallowRange < 0.0f && deepRange <= 0.0f -> Color.DEPIT
-                shallowRange <= config.shallowDepth -> Color.DEPVS
-                shallowRange <= config.safetyDepth -> Color.DEPMS
-                shallowRange <= config.deepDepth -> Color.DEPMD
-                shallowRange > config.deepDepth -> Color.DEPDW
-                else -> Color.DEPMD
+                drval1 <= 0.0f -> Color.DEPIT
+                drval1 <= config.shallowDepth -> Color.DEPVS
+                drval1 <= config.safetyDepth -> Color.DEPMS
+                drval1 <= config.deepDepth -> Color.DEPMD
+                else -> Color.DEPDW
             }
         }
         feature.areaColor(ac)
         feature.areaPattern(Sprite.DRGARE01P)
         feature.lineColor(Color.CHGRD)
+    }
+
+    override fun layers(options: LayerableOptions): Sequence<Layer> {
+        return sequenceOf(
+            areaLayerWithFillColor(theme = options.theme, options = areaFillColors),
+            areaLayerWithFillPattern(),
+            lineLayerWithColor(theme = options.theme, width = 0.5f, options = setOf(Color.CHGRD), style = LineStyle.DashLine),
+        )
     }
 }

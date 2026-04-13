@@ -6,6 +6,7 @@ import kotlinx.cinterop.convert
 import kotlinx.cinterop.memScoped
 import kotlinx.cinterop.ptr
 import kotlinx.cinterop.refTo
+import kotlinx.cinterop.convert
 import kotlinx.cinterop.toCValues
 import kotlinx.cinterop.toKString
 import kotlinx.io.files.Path

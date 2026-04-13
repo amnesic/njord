@@ -7,6 +7,11 @@ headerFilter = *
 compilerOpts.linux = -I/usr/include/postgresql
 
 # `dpkg-query -L libpq5`
-linkerOpts.linux = -L/usr/lib/x86_64-linux-gnu -lpq
+linkerOpts.linux = -lpq
 
-linkerOpts.osx = -lpq
+# brew install libpq
+compilerOpts.macos_arm64 = -I/opt/homebrew/opt/libpq/include
+linkerOpts.macos_arm64 = -L/opt/homebrew/opt/libpq/lib -lpq
+
+compilerOpts.macos_x64 = -I/usr/local/opt/libpq/include
+linkerOpts.macos_x64 = -L/usr/local/opt/libpq/lib -lpq

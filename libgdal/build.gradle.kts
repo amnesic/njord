@@ -1,7 +1,3 @@
-import java.io.File
-import java.nio.file.Files
-import java.nio.file.Paths
-
 plugins {
     kotlin("multiplatform")
     kotlin("plugin.serialization")
@@ -18,12 +14,12 @@ repositories {
 
 kotlin {
     val hostOs = System.getProperty("os.name")
-    val isArm64 = System.getProperty("os.arch") == "aarch64"
+    val isArm64 = System.getProperty("os.arch") == "aarch64" || project.findProperty("buildForArm64") == "true"
+    val multiarchTuple = if (isArm64) "aarch64-linux-gnu" else "x86_64-linux-gnu"
     val isMingwX64 = hostOs.startsWith("Windows")
     val name = "arch"
     val nativeTarget = when {
-        hostOs == "Mac OS X" && isArm64 -> macosArm64(name)
-        hostOs == "Mac OS X" && !isArm64 -> macosX64(name)
+        hostOs == "Mac OS X" -> macosArm64(name)
         hostOs == "Linux" && isArm64 -> linuxArm64(name)
         hostOs == "Linux" && !isArm64 -> linuxX64(name)
         isMingwX64 -> mingwX64(name)
@@ -33,38 +29,14 @@ kotlin {
     nativeTarget.apply {
         compilations.getByName("main") {
             cinterops {
-                @Suppress("unused") val libgdal by creating {
-                    if (NativeLibResolver.isMacOS) {
-                        NativeLibResolver.resolve("gdal")?.let { flags ->
-                            // Handle flat header layout (Conda: include/gdal.h instead of include/gdal/gdal.h)
-                            val includeDir = flags.compilerOpts
-                                .firstOrNull { it.startsWith("-I") }
-                                ?.removePrefix("-I")
-                            if (includeDir != null && !File("$includeDir/gdal/gdal.h").exists()) {
-                                val compatDir = File(project.layout.buildDirectory.asFile.get(), "gdal-include-compat/gdal")
-                                if (!compatDir.exists()) {
-                                    compatDir.parentFile.mkdirs()
-                                    // Remove broken symlink if it exists at the filesystem level
-                                    Files.deleteIfExists(compatDir.toPath())
-                                    Files.createSymbolicLink(
-                                        compatDir.toPath(),
-                                        Paths.get(includeDir)
-                                    )
-                                }
-                                compilerOpts("-I${compatDir.parentFile.absolutePath}")
-                            }
-                            compilerOpts(*flags.compilerOpts.toTypedArray())
-                        }
-                    }
+                val libgdal by creating {
+                    if (hostOs == "Linux") compilerOpts("--sysroot=/", "-I/usr/include/$multiarchTuple", "-D__glibc_clang_prereq(a,b)=0")
                 }
             }
         }
         binaries {
             staticLib {
                 baseName = "gdal"
-                if (NativeLibResolver.isMacOS) {
-                    linkerOpts(*NativeLibResolver.macOsLinkerPaths.toTypedArray())
-                }
             }
         }
     }

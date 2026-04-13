@@ -172,6 +172,8 @@ def pattern_png(png_path, matrix):
 def temp_svg(css: str, svg: str, theme: str, svg_dir: str, svg_t_dir: str):
     orig = os.path.join(svg_dir, svg)
     temp = os.path.join(svg_t_dir, "{}_{}".format(theme, svg))
+    if not os.path.exists(svg_t_dir):
+        os.makedirs(svg_t_dir)
     with open(orig, "r") as fp:
         data = fp.read()
         with open(temp, "w+") as tfp:
