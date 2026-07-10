@@ -1,9 +1,11 @@
 .gradle
 build/
 out/
+bin/
 .DS_Store
 data/
 .idea/
 .kotlin/
 **/VersionInfo.kt
 local.properties
+node_modules/
