@@ -224,11 +224,14 @@
     },
     "shom": {
       "DAY": {
-        "LANDA": "#ffe0b7",
+        "LANDA": "#f7edc0",
         "NODTA": "#e1e0de",
-        "DEPDW": "#fff9f5",
-        "LANDF": "#ffc87d",
-        "CHBRN": "#e2c09c"
+        "LANDF": "#d2cba5",
+        "CHBRN": "#e2c09c",
+        "DEPIT": "#cadcc1",
+        "DEPVS": "#cbddee",
+        "DEPMS": "#f2f6fb",
+        "DEPDW": "#fff9f5"
       }
     }
   }
