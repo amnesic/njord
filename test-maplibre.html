@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Njord MVT - Test MapLibre</title>
+    <script src="https://unpkg.com/maplibre-gl@4.7.1/dist/maplibre-gl.js"></script>
+    <link href="https://unpkg.com/maplibre-gl@4.7.1/dist/maplibre-gl.css" rel="stylesheet">
+    <style>
+        body { margin: 0; }
+        #map { width: 100%; height: 100vh; }
+        #controls {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            z-index: 1;
+            background: rgba(255, 255, 255, 0.9);
+            padding: 10px 14px;
+            border-radius: 6px;
+            font-family: sans-serif;
+            font-size: 14px;
+            box-shadow: 0 1px 4px rgba(0,0,0,0.3);
+        }
+        #controls label { cursor: pointer; }
+    </style>
+</head>
+<body>
+    <div id="controls">
+        <label><input type="checkbox" id="toggle-lights" checked> Feux &amp; secteurs</label><br>
+        <label><input type="checkbox" id="toggle-covr" checked> Couvertures cartes</label>
+    </div>
+    <div id="map"></div>
+    <script>
+        const map = new maplibregl.Map({
+            container: 'map',
+            style: 'https://caas-mvt.geogarage.com/v1/style/meters/day',
+            center: [-3.0, 48.0],  // Bretagne
+            zoom: 8
+        });
+        map.addControl(new maplibregl.NavigationControl());
+
+        // Toggle lights visibility
+        document.getElementById('toggle-lights').addEventListener('change', (e) => {
+            const visibility = e.target.checked ? 'visible' : 'none';
+            map.getStyle().layers
+                .filter(l => l['source-layer'] === 'LIGHTS')
+                .forEach(l => map.setLayoutProperty(l.id, 'visibility', visibility));
+        });
+
+        // Toggle chart coverage (PLY layer)
+        document.getElementById('toggle-covr').addEventListener('change', (e) => {
+            const visibility = e.target.checked ? 'visible' : 'none';
+            map.getStyle().layers
+                .filter(l => l['source-layer'] === 'PLY')
+                .forEach(l => map.setLayoutProperty(l.id, 'visibility', visibility));
+        });
+
+        // Light sectors: generate SVG images on-the-fly when MapLibre needs them
+        map.on('styleimagemissing', (e) => {
+            const id = e.id;
+            if (!id.startsWith('sector_')) return;
+
+            const parts = id.replace('sector_', '').split('_');
+            if (parts.length < 9) return;
+
+            const sectr1 = parseFloat(parts[0]);
+            const sectr2 = parseFloat(parts[1]);
+            const fillColor = parts[2];  // day color
+            const lineColor = parts[5];  // day line color
+            const radius = parseFloat(parts[8]) || 80;
+
+            const svg = buildSectorSvg(sectr1, sectr2, fillColor, lineColor, radius);
+            const img = new Image(200, 200);
+            img.onload = () => map.addImage(id, img);
+            img.src = 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(svg);
+        });
+
+        function buildSectorSvg(sectr1, sectr2, fillColor, lineColor, radius) {
+            const s1 = (sectr1 + 180) % 360;
+            const s2 = (sectr2 + 180) % 360;
+            const cx = 100, cy = 100;
+            const a1 = s1 * Math.PI / 180;
+            const a2 = s2 * Math.PI / 180;
+            const x1 = cx + radius * Math.sin(a1);
+            const y1 = cy - radius * Math.cos(a1);
+            const x2 = cx + radius * Math.sin(a2);
+            const y2 = cy - radius * Math.cos(a2);
+            const span = (s2 - s1 + 360) % 360;
+
+            let arc, lines = '';
+            if (span === 0) {
+                arc = `<circle cx="${cx}" cy="${cy}" r="${radius}" fill="none" stroke="${fillColor}" stroke-width="4"/>`;
+            } else {
+                const large = span > 180 ? 1 : 0;
+                arc = `<path d="M ${x1} ${y1} A ${radius} ${radius} 0 ${large} 1 ${x2} ${y2}" fill="none" stroke="${fillColor}" stroke-width="4" stroke-linecap="butt"/>`;
+                lines = `<line x1="${cx}" y1="${cy}" x2="${x1}" y2="${y1}" stroke="${lineColor}" stroke-width="2" stroke-dasharray="4 6"/>
+                         <line x1="${cx}" y1="${cy}" x2="${x2}" y2="${y2}" stroke="${lineColor}" stroke-width="2" stroke-dasharray="4 6"/>`;
+            }
+            return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200">${arc}${lines}</svg>`;
+        }
+    </script>
+</body>
+</html>
