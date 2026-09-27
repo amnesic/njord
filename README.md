@@ -6,6 +6,8 @@
 
 [Design documentation](docs/DESIGN.md)
 
+[NOAA ENC update cron](docs/NOAA_ENC_UPDATE_CRON.md)
+
 [RELEASE_NOTES](./RELEASE_NOTES.md)
 
 ## Project Overview
@@ -22,6 +24,9 @@ Gradle with Kotlin DSL. Use `./gradlew` at the root.
 ### Development Workflow
 
 ```bash
+# 0. Start podman (if needed)
+podman machine start 
+
 # 1. Start the database (PostGIS)
 cd chart_server_db && podman-compose up
 
@@ -63,6 +68,10 @@ podman run --rm --network host ghcr.io/manimaul/njord-chart-server:<version>
 ./gradlew :geojson:jvmTest
 ```
 
+### NOAA update job
+
+[NOAA ENC update cron](enc_cron/README.md)
+
 ### Containerization & Deployment
 
 ```bash
@@ -76,15 +85,18 @@ podman run --rm --network host ghcr.io/manimaul/njord-chart-server:<version>
 
 ### Module Structure
 
-| Module | Target | Purpose |
-|--------|--------|---------|
-| `server` | Kotlin/Native | HTTP server: ingestion, tile serving, API endpoints |
-| `web` | Kotlin/JS | Compose frontend with MapLibre GL map |
-| `shared` | Multiplatform (JVM/JS/Native) | Shared data models, serialization |
-| `shared_fe` | Kotlin/JS | Frontend UI components, MapLibre bindings |
-| `libgdal` | Kotlin/Native | C interop bindings to GDAL 3.6.2 |
-| `libpq` | Kotlin/Native | C interop bindings to PostgreSQL client |
-| `geojson` | Multiplatform | GeoJSON RFC 7946 implementation |
+| Module | Target | Purpose                                                 |
+|--------|--------|---------------------------------------------------------|
+| `server` | Kotlin/Native | HTTP server: ingestion, tile serving, API endpoints     |
+| `web` | Kotlin/JS | Compose frontend with MapLibre GL map                   |
+| `shared` | Multiplatform (JVM/JS/Native) | Shared data models, serialization                       |
+| `shared_fe` | Kotlin/JS | Frontend UI components, MapLibre bindings               |
+| `libgdal` | Kotlin/Native | C interop bindings to GDAL 3.6.2                        |
+| `libpq` | Kotlin/Native | C interop bindings to PostgreSQL client                 |
+| `libsqlite` | Kotlin/Native | C interop bindings to SQLite (region export for mobile) |
+| `libexpat` | Kotlin/Native | C interop bindings to expat (streaming XML SAX parsing)  |
+| `enc_cron` | Kotlin/Native | Nightly NOAA ENC catalog diff and download job           |
+| `geojson` | Multiplatform | GeoJSON RFC 7946 implementation                         |
 
 ### Data Pipeline
 
@@ -92,12 +104,16 @@ podman run --rm --network host ghcr.io/manimaul/njord-chart-server:<version>
 2. **Processing**: `server/src/nativeMain/kotlin/ingest/ChartIngest.kt` reads files via GDAL (`libgdal`), extracts chart metadata and features, converts all geometries to WGS84 (EPSG:4326), stores as GeoJSON FeatureCollections in PostGIS
 3. **Tile serving**: On tile request, `TileEncoder` queries PostGIS for charts and features within the tile envelope, clips geometries, and encodes as protobuf MVT
 4. **Styling**: Each S-57 object class has a corresponding layer class in `server/src/nativeMain/kotlin/layers/` that defines Mapbox GL style rules. The `TileEncoder` adds symbol properties (e.g., `SY`) to feature properties so the style JSON can reference them via `["get","SY"]`.
+5. **Region export**: After ingestion completes, `RegionExportWorker` generates SQLite archive files for configured geographic regions. Mobile clients download these archives and replay the data into a local SQLite database for offline chart rendering.
+6. **NOAA updates**: The `enc_cron` job (Kubernetes CronJob, nightly) streams NOAA's ISO-19115 product catalog, diffs it against `GET /v1/chart_editions`, and downloads only the cells whose revision changed - bundling them into zips dropped in the ingest `save/` directory.
 
 ### Key Files in `server`
 
 - `Main.kt` — entry point; initializes GDAL, database, HTTP server
 - `geo/TileEncoder.kt` — MVT tile assembly
 - `ingest/ChartIngest.kt` — S-57 file processing pipeline
+- `ingest/RegionExporter.kt` — region SQLite archive generation
+- `ingest/RegionExportWorker.kt` — post-ingestion region export scheduling
 - `layers/` — one file per S-57 object class (e.g., `Depare.kt`, `Soundg.kt`, `Boyspp.kt`)
 - `endpoints/` — HTTP/WebSocket route handlers
 
@@ -110,6 +126,7 @@ PostgreSQL 13 + PostGIS. For development, run via Podman Compose in `chart_serve
 - **openjdk-17-jre-headless** — required for Gradle and Kotlin/Native toolchain
 - **libgdal-dev** — Geospatial Data Abstraction Library - Development files
 - **libpq-dev** - header files for libpq5 (PostgreSQL library)
+- **libexpat1-dev** - header files for libexpat1 (XML parsing, used by `enc_cron`)
 - **PostGIS 13** — run in Podman for development (see `chart_server_db/README.md`)
 
 ## Important Notes
@@ -123,7 +140,7 @@ PostgreSQL 13 + PostGIS. For development, run via Podman Compose in `chart_serve
 
 Required packages
 ```shell
-brew install gdal libpq gd libzip openssl@3 openjdk@21
+brew install gdal libpq gd libzip sqlite expat openssl@3 openjdk@21
 ```
 
 Useful packages 

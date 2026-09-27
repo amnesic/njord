@@ -4,13 +4,13 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
-import io.madrona.njord.routing.Route
+import io.madrona.njord.routing.NjordRoute
 import io.madrona.njord.viewmodel.*
 import org.jetbrains.compose.web.dom.*
 
 @Composable
-actual fun ChartInfoPage(id: String) {
-    val viewModel = remember { ChartInfoViewModel(id) }
+actual fun ChartInfoPage(name: String) {
+    val viewModel = remember { ChartInfoViewModel(name) }
     val state by viewModel.flow.collectAsState()
     state.info.complete(viewModel) { chart ->
         Div(attrs = {
@@ -27,10 +27,6 @@ actual fun ChartInfoPage(id: String) {
                 }
                 Tbody {
                     Tr {
-                        Td { Text("ID") }
-                        Td { Text("${chart.id}") }
-                    }
-                    Tr {
                         Td { Text("Name") }
                         Td {
                             Text("${chart.name} ")
@@ -38,7 +34,7 @@ actual fun ChartInfoPage(id: String) {
                                 classes("btn", "btn-outline-secondary", "btn-sm")
                                 onClick {
                                     chartViewModel.setBounds(chart.bounds, chart.covr)
-                                    routeViewModel.pushRoute(Route.Enc)
+                                    routeViewModel.pushRoute(NjordRoute.Enc)
                                 }
                             }) {
                                 Text("ENC Zoom")
@@ -105,7 +101,7 @@ fun ChartInfoList(
 
         Ol {
             Li {
-                Link(label = "id: ${chart.id}", path = "/chart/${chart.id}")
+                Link(label = chart.name, path = "/chart/${chart.name}")
             }
             Li {
                 B { Text("File name: ") }

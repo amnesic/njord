@@ -92,6 +92,9 @@ fun Application.njord() {
         launch {
             ChartIngestWorker().run()
         }
+        launch {
+            Singletons.regionExportWorker.run()
+        }
     }
     install(CORS) {
         anyHost()
@@ -147,16 +150,21 @@ fun Application.njord() {
             ChartWebSocketHandler(),
 
             //curl -v -H "Content-Type: application/json" --request POST  --data '{"name": "foo", "scale": 0, "file_name": "foo.000", "updated": "1979", "issued": "1980", "zoom": 1, "dsid_props": {}, "chart_txt": {}}' https://openenc.com/v1/chart
-            //curl -v -X DELETE 'https://openenc.com/v1/chart?id=1'
+            //curl -v -X DELETE "https://openenc.com/v1/chart?id=1&signature=$sig"
+            //curl -v -X DELETE "https://openenc.com/v1/chart?name=US5WA17M.000&signature=$sig"
             //curl -v 'https://openenc.com/v1/chart?id=1' | jq
             ChartHandler(),
 
             //curl -v 'https://openenc.com/v1/chart_catalog' | jq
             ChartCatalogHandler(),
 
-            //curl -v -H "Content-Type: application/json" --request POST --data-binary "@data/BOYSPP.json" 'https://openenc.com/v1/geojson?chart_id=8&name=BOYSPP'
-            //curl -v -H "Content-Type: application/json" --request POST --data-binary "@${HOME}/source/madrona/njord/data/US3WA46M/ogr_BOYSPP.json" 'https://openenc.com/v1/geojson?chart_id=17&name=BOYSPP'
-            //curl -v 'https://openenc.com/v1/geojson?chart_id=17&layer_name=BOYSPP' | jq
+            // Bulk "<EDTN>.<UPDN>" per chart, used by enc_cron to diff against NOAA's catalog.
+            //curl -v 'https://openenc.com/v1/chart_editions' | jq
+            ChartEditionsHandler(),
+
+            //curl -v -H "Content-Type: application/json" --request POST --data-binary "@data/BOYSPP.json" 'https://openenc.com/v1/geojson?chart_name=US3WA46M.000&layer_name=BOYSPP'
+            //curl -v -H "Content-Type: application/json" --request POST --data-binary "@${HOME}/source/madrona/njord/data/US3WA46M/ogr_BOYSPP.json" 'https://openenc.com/v1/geojson?chart_name=US3WA46M.000&layer_name=BOYSPP'
+            //curl -v 'https://openenc.com/v1/geojson?chart_name=US3WA46M.000&layer_name=BOYSPP' | jq
             GeoJsonHandler(),
 
             // curl -v "https://openenc.com/v1/tile/0/0/0"
@@ -185,6 +193,18 @@ fun Application.njord() {
 
             //curl -u ${OPEN_ENC_USER}:${OPEN_ENC_PASS} -v -H "Content-Type: application/json" --request POST  --data "$(curl -u ${OPEN_ENC_USER}:${OPEN_ENC_PASS} https://openenc.com/v1/admin)" https://openenc.com/v1/verify_admin
             AdminVerifyHandler(),
+
+            // curl https://openenc.com/v1/regions | jq
+            // sig=$(curl -u ${NJORD_ADMIN_USER}:${NJORD_ADMIN_PASS} https://openenc.com/v1/admin | jq -r .signatureEncoded)
+            // curl -v -X POST "https://openenc.com/v1/regions?name=REGION_04&signature=$sig"
+            RegionHandler(),
+
+            // curl -O https://openenc.com/v1/regions/REGION_15_2026-04-14T07-00-31.sqlite
+            RegionArchiveHandler(),
+
+            // sig=$(curl -u ${OPEN_ENC_USER}:${OPEN_ENC_PASS} https://openenc.com/v1/admin | jq -r .signatureEncoded)
+            // curl -v -X DELETE "https://openenc.com/v1/nuke?signature=$sig"
+            NukeHandler(),
         ).forEach {
             addHandler(it)
         }

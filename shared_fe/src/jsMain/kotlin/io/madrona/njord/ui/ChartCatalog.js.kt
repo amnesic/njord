@@ -25,7 +25,6 @@ fun ChartTable(
     ) {
         Thead {
             Tr {
-                Th { Text("Record ID") }
                 Th { Text("Chart Name") }
             }
         }
@@ -33,12 +32,9 @@ fun ChartTable(
             state.filtered.forEachIndexed { i, ea ->
                 Tr {
                     Td {
-                        B { Text("${ea.id} ") }
-                    }
-                    Td {
                         Link(
                             label = ea.name,
-                            path = "/chart/${ea.id}"
+                            path = "/chart/${ea.name}"
                         )
                         if (state.filter == null)
                             Text(" (${i + 1} of ${catalog.totalChartCount})")

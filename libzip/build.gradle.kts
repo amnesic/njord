@@ -1,5 +1,5 @@
 plugins {
-    kotlin("multiplatform")
+    alias(libs.plugins.kotlin.multiplatform)
     id("maven-publish")
 }
 
@@ -37,6 +37,9 @@ kotlin {
         binaries {
             staticLib {
                 baseName = "zip"
+            }
+            if (hostOs == "Linux") {
+                getTest("DEBUG").linkerOpts("-L/usr/lib/$multiarchTuple")
             }
         }
     }

@@ -4,9 +4,8 @@ import io.madrona.njord.geojson.BoundingBox
 import io.madrona.njord.geojson.Feature
 import io.madrona.njord.geojson.Point
 import io.madrona.njord.model.*
+import io.madrona.njord.routing.NjordRoute
 import io.madrona.njord.routing.QueryParams
-import io.madrona.njord.routing.Route
-import io.madrona.njord.routing.Routing
 import io.madrona.njord.util.localStoreGet
 import io.madrona.njord.util.localStoreSet
 import kotlinx.coroutines.flow.map
@@ -15,7 +14,7 @@ import kotlinx.serialization.Serializable
 
 private fun mapLocation(): MapLocation? {
     return routeViewModel.flow.value.current.takeIf {
-        it.route == Route.Enc
+        it.route == NjordRoute.Enc
     }?.let { it.params?.values }?.let {
         val lng = it["lng"]?.toDoubleOrNull()
         val lat = it["lat"]?.toDoubleOrNull()
@@ -35,6 +34,7 @@ data class ChartState(
     val theme: Theme = localStoreGet<Theme>() ?: ThemeMode.Day,
     val depth: Depth = localStoreGet<Depth>() ?: Depth.FEET,
     val query: List<MapGeoJsonFeature> = emptyList(),
+    val region: String? = null,
 )
 
 @Serializable
@@ -77,9 +77,9 @@ class ChartViewModel : BaseViewModel<ChartState>(ChartState()) {
         }
         launch {
             flow.map { it.location }.collect {
-                if (routeViewModel.flow.value.current.route == Route.Enc) {
+                if (routeViewModel.flow.value.current.route == NjordRoute.Enc) {
                     routeViewModel.replaceRoute(
-                        Routing.from(
+                        NjordRoute.registry.from(
                             "/enc",
                             QueryParams("lat=${it.latitude}&lng=${it.longitude}&z=${it.zoom}")
                         )
@@ -118,6 +118,13 @@ class ChartViewModel : BaseViewModel<ChartState>(ChartState()) {
         setState {
             controller.setStyle(theme, depth)
             copy(theme = theme)
+        }
+    }
+
+    fun setRegion(region: String?) {
+        setState {
+            controller.setRegionFilter(region)
+            copy(region = region)
         }
     }
 

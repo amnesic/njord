@@ -8,7 +8,6 @@ import io.madrona.njord.db.ChartDao
 import io.madrona.njord.ext.json
 import io.madrona.njord.geo.symbols.S57ObjectLibrary
 import io.madrona.njord.layers.LayerFactory
-import io.madrona.njord.model.ChartFeature
 import io.madrona.njord.model.ChartFeatureInfo
 import kotlinx.serialization.json.*
 import tile.VectorTileEncoder
@@ -115,10 +114,10 @@ class TileEncoder(
         chartQueryDuration
         chartQueryDuration = cd
         charts?.let { charts ->
-            val eligibleChartIds = charts.filter { it.zoom in 0..z }.map { it.id }
+            val eligibleChartNames = charts.filter { it.zoom in 0..z }.map { it.name }
 
             val (allFeatures, fd) = measureTimedValue {
-                chartDao.findAllChartFeaturesAsync4326(tileWkb, eligibleChartIds, z) ?: emptyMap()
+                chartDao.findAllChartFeaturesAsync4326(tileWkb, eligibleChartNames, z) ?: emptyMap()
             }
             featureQueryDuration += fd
 
@@ -126,11 +125,11 @@ class TileEncoder(
                 val chartGeo = OgrGeometry.fromWkb4326(chart.covrWKB) ?: error("chart cover geo not valid")
                 if (!include.isEmpty() && chart.zoom in 0..z) {
                     val chartInclude = include
-                    allFeatures[chart.id]?.forEach { feature ->
+                    allFeatures[chart.name]?.forEach { feature ->
 
                         val (props, ed) = measureTimedValue {
                             layerFactory.preTileEncode(feature).props.filtered().also {
-                                it["CID"] = chart.id.json
+                                it["NAME"] = chart.name.json
                             }
                         }
                         preEncodeDuration += ed
@@ -182,19 +181,34 @@ class TileEncoder(
 
         // Encode base map features inside un rendered "include"
         if (!include.isEmpty() && !info) {
-            baseMapDuration = measureTimedValue {
-                baseFeatureDao.findFeaturesAsync(findBaseMapScale(z), include.wkb)?.forEach { feature ->
-                    val props = layerFactory.preTileEncode(feature).props.filtered()
-                    feature.geomWKB?.let { OgrGeometry.fromWkb4326(it) }
-                        ?.takeIf { it.isValid && !it.isEmpty() }
-                        ?.let { tileGeo ->
-                            transformToTilePixels(tileGeo, x, y, z, tileSystem)
-                            vectorTileEncoder.addFeature(feature.layer, props, tileGeo)
-                        }
-                }
-            }.duration
+            renderBaseMap(include)
         }
         return this
+    }
+
+    /**
+     * Renders only base map features across the entire tile, skipping the chart query and
+     * encoding pipeline entirely. Used by the "WORLD" region export, which is a base-map-only
+     * archive with no charts involved.
+     */
+    suspend fun addBaseMapOnly(): TileEncoder {
+        val include: OgrGeometry = tileSystem.createTileClipPolygon(x, y, z, expandPixels = 15)
+        renderBaseMap(include)
+        return this
+    }
+
+    private suspend fun renderBaseMap(include: OgrGeometry) {
+        baseMapDuration = measureTimedValue {
+            baseFeatureDao.findFeaturesAsync(findBaseMapScale(z), include.wkb)?.forEach { feature ->
+                val props = layerFactory.preTileEncode(feature).props.filtered()
+                feature.geomWKB?.let { OgrGeometry.fromWkb4326(it) }
+                    ?.takeIf { it.isValid && !it.isEmpty() }
+                    ?.let { tileGeo ->
+                        transformToTilePixels(tileGeo, x, y, z, tileSystem)
+                        vectorTileEncoder.addFeature(feature.layer, props, tileGeo)
+                    }
+            }
+        }.duration
     }
 
 
@@ -227,6 +241,13 @@ class TileEncoder(
         finalEncodeDuration += duration
         return mvt
     }
+
+    /**
+     * True if this tile has real content beyond the "PLY" chart-coverage-boundary layer,
+     * which addCharts() adds unconditionally for any intersecting chart regardless of
+     * whether that chart contributed any actual rendered features to this tile.
+     */
+    fun hasContent(): Boolean = vectorTileEncoder.hasFeatures(excludingLayers = setOf("PLY"))
 
     fun infoJson() : List<ChartFeatureInfo> {
         return infoFeatures

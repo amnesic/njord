@@ -15,6 +15,7 @@ import io.madrona.njord.db.TileDao
 import io.madrona.njord.endpoints.AdminUtil
 import io.madrona.njord.geo.symbols.S57ObjectLibrary
 import io.madrona.njord.ingest.IngestStatus
+import io.madrona.njord.ingest.RegionExportWorker
 import io.madrona.njord.layers.LayerFactory
 import io.madrona.njord.model.ColorLibrary
 import io.madrona.njord.util.DistributedLock
@@ -52,6 +53,10 @@ object Singletons {
         File(config.chartTempData, "ingest")
     }
 
+    val regionDir by lazy {
+        File(config.chartTempData, "regions")
+    }
+
     val ingestStatusFile by lazy {
         File(config.chartTempData, "status.json")
     }
@@ -64,7 +69,19 @@ object Singletons {
         DistributedLock()
     }
 
+    val migrationLockFile by lazy {
+        File(config.chartTempData, "migration-lock")
+    }
+
+    // Separate from [distributedLock] (ingest/export) so a lock stranded by a killed
+    // ingest or region-export can never block a new pod's startup migrations.
+    val migrationLock by lazy {
+        DistributedLock(lockFile = migrationLockFile)
+    }
+
     val ingestStatus by lazy { IngestStatus() }
+
+    val regionExportWorker by lazy { RegionExportWorker() }
 
     val tileDao by lazy { TileDao() }
 

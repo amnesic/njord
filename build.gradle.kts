@@ -3,11 +3,11 @@ import GitInfo.gitShortHash
 import org.jetbrains.kotlin.gradle.targets.js.webpack.KotlinWebpack
 
 plugins {
-    kotlin("jvm") version kotlinVersion apply false
-    kotlin("multiplatform") version kotlinVersion apply false
-    kotlin("plugin.compose") version kotlinVersion apply false
-    id("org.jetbrains.compose") version composeVersion apply false
-    kotlin("plugin.serialization") version kotlinVersion apply false
+    alias(libs.plugins.kotlin.jvm) apply false
+    alias(libs.plugins.kotlin.multiplatform) apply false
+    alias(libs.plugins.kotlin.compose) apply false
+    alias(libs.plugins.jetbrains.compose) apply false
+    alias(libs.plugins.kotlin.serialization) apply false
 }
 
 version = "${properties["version"]}"
@@ -36,13 +36,12 @@ task("version") {
     }
 }
 
+
 /**
  * Writes k8s secret with CHART_SERVER_OPTS (adminKey, adminUser, adminPass)
  */
-task("secret") {
-    doLast {
-        println(k8sApplySecret())
-    }
+task<Exec>("secret") {
+    commandLine("bash", "-c", "echo '${secretYaml()}' | kubectl apply -f -")
 }
 
 /**
@@ -91,12 +90,18 @@ task<Exec>("k8sApply") {
 }
 
 /**
- * Cycle K8S Pods
+ * Cycle the njord-ingest ReplicaSet pod (bare ReplicaSet has no rollout support)
  */
-task<Exec>("cyclePods") {
+task<Exec>("cycleIngestPod") {
+    commandLine("bash", "-c", "kubectl -n njord delete pods -l app=njord-ingest")
+}
+
+/**
+ * Rolling restart of the njord-chart-svc deployment
+ */
+task<Exec>("rolloutRestart") {
     mustRunAfter(":k8sApply", ":pubImg", ":holdOn")
-    commandLine("bash", "-c", "kubectl -n njord delete pods -l app=njord-chart-svc && " +
-            "kubectl -n njord delete pods -l app=njord-ingest")
+    commandLine("bash", "-c", "kubectl -n njord rollout restart deployment/njord-chart-dep")
 }
 
 /**
@@ -112,7 +117,7 @@ task<Exec>("holdOn") {
  * eg `./gradlew :buildPublishDeploy`
  */
 tasks.register<GradleBuild>("deploy") {
-    tasks = listOf(":makeImg", ":pubImg", ":k8sApply", ":holdOn", ":cyclePods")
+    tasks = listOf(":makeImg", ":pubImg", ":k8sApply", ":holdOn", ":rolloutRestart")
 }
 
 tasks.findByPath(":web:jsBrowserProductionWebpack")?.let { it as? KotlinWebpack }?.apply {

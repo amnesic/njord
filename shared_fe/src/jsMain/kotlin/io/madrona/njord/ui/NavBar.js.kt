@@ -6,6 +6,7 @@ import io.madrona.njord.model.Depth
 import io.madrona.njord.model.ThemeMode
 import io.madrona.njord.model.colorName
 import io.madrona.njord.model.mode
+import io.madrona.njord.routing.NjordRoute
 import io.madrona.njord.viewmodel.NavBarViewModel
 import io.madrona.njord.viewmodel.adminViewModel
 import io.madrona.njord.viewmodel.chartViewModel
@@ -21,6 +22,7 @@ fun <T> NavDropdown(
     selected: T,
     title: (T) -> String,
     options: List<T>,
+    itemLabel: (T) -> String = { "$it" },
     callback: (T) -> Unit,
 ) {
     var expanded by remember { mutableStateOf(false) }
@@ -52,7 +54,7 @@ fun <T> NavDropdown(
                     attr("data-rr-ui-dropdown-item", "")
                     classes("dropdown-item")
                     tabIndex(i)
-                }) { Text("$option") }
+                }) { Text(itemLabel(option)) }
 
             }
         }
@@ -95,7 +97,7 @@ actual fun NavBar() {
                 classes("collapse", "navbar-collapse")
             }) {
                 Ul(attrs = { classes("navbar-nav") }) {
-                    routeState.navBarRoutes.forEach { routing ->
+                    NjordRoute.navBarRoutes.forEach { routing ->
                         Li(attrs = { classes("nav-item") }) {
                             Button(attrs = {
                                 if (routing.route == routeState.current.route) {
@@ -120,6 +122,17 @@ actual fun NavBar() {
                     state.customColors.value?.let { cc ->
                         NavDropdown(chartState.theme.colorName(), { "Colors: $it" }, cc) {
                             chartViewModel.setCustomColor(it)
+                        }
+                    }
+                    state.regions.value?.let { regionNames ->
+                        val options: List<String?> = listOf(null) + regionNames
+                        NavDropdown(
+                            chartState.region,
+                            { "Region: ${it ?: "All"}" },
+                            options,
+                            itemLabel = { it ?: "All" },
+                        ) {
+                            chartViewModel.setRegion(it)
                         }
                     }
                 }

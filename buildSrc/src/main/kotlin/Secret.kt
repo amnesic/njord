@@ -37,10 +37,19 @@ type: Opaque
 stringData:
   pgbouncer.ini: |
     [databases]
-    s57server = host=${dbHost()} port=${dbPort()} dbname=${dbName()} user=${dbUser()}
+    # Points at the njord-db-relay Service, not the database directly. The pods have no
+    # globally routable IPv6 address (LKE pod networking is IPv4-only), so a sidecar dialling
+    # the database by name lands on its A record and Akamai bills the IPv4 transfer. The relay
+    # is a hostNetwork forwarder that reaches the database over IPv6 from the node netns - see
+    # the njord-db-relay DaemonSet in k8s_deploy/chart_server.yaml. The real endpoint is
+    # published to that relay through the njord-db-upstream ConfigMap below.
+    s57server = host=njord-db-relay.njord.svc.cluster.local port=6432 dbname=${dbName()} user=${dbUser()}
 
     [pgbouncer]
-    listen_addr = 0.0.0.0
+    # Pod loopback only. The njord server shares this pod network namespace and connects over
+    # localhost, so this costs nothing, and it keeps auth_type=trust from being reachable at
+    # <podIP>:5432 by anything else in the cluster.
+    listen_addr = 127.0.0.1
     listen_port = 5432
     auth_type = trust
     auth_file = /etc/pgbouncer/userlist.txt
@@ -48,6 +57,19 @@ stringData:
     max_client_conn = 100
     default_pool_size = 10
     server_reset_query =
+---
+# Not a secret, but it rides along here because it is the same NJORD_DB_HOST/NJORD_DB_PORT
+# pair that used to go straight into pgbouncer.ini above. Keeping both in one place is what
+# stops the relay and the pooler from drifting onto different endpoints. Note that changing
+# this does not restart the DaemonSet - cycle the relay pods after applying.
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: njord-db-upstream
+  namespace: njord
+data:
+  DB_HOST: ${dbHost()}
+  DB_PORT: "${dbPort()}"
 ---
 apiVersion: v1
 kind: Secret
@@ -67,5 +89,3 @@ metadata:
 data:
   chart_server_opts: "${Base64.getEncoder().encodeToString(options().toByteArray())}" 
 """
-
-fun k8sApplySecret() = CommandLine.exec("echo '${secretYaml()}' | kubectl apply -f -")

@@ -13,6 +13,15 @@ class TileSystemTest {
         Gdal.initialize()
     }
 
+    @Test
+    fun manuallyTunedZoom() {
+        val scale = 150_000.0
+        val zoomUnadjusted = subject.scaleToZoomInt(scale, 47.84_485_177_047_364, 1.0)
+        assertEquals(11, zoomUnadjusted)
+        val zoom = subject.scaleToZoomInt(scale, 47.84_485_177_047_364)
+        assertEquals(10, zoom)
+    }
+
     /*
     ┌────────────┬───────────────────┬───────────────────────┬───────────────────┐
     │ Zoom Level │ Resolution (m/px) │ Map Scale (at 96 dpi) │ Map Size (pixels) │
@@ -124,6 +133,18 @@ class TileSystemTest {
         // At Seattle latitude (~47.6°), 1:35,000 should be around street level (zoom ~14)
         val zoom = subject.scaleToZoom(35_000.0, 47.6)
         assertTrue(zoom > 13.0 && zoom < 14.0, "Expected street-level zoom (~14) but got $zoom")
+    }
+
+    @Test
+    fun scaleToZoomIntRoundsToNearest() {
+        val equatorZoom = subject.scaleToZoomInt(35_000.0, 0.0, 1.0)
+        assertEquals(kotlin.math.round(subject.scaleToZoom(35_000.0, 0.0)).toInt(), equatorZoom)
+
+        // Mercator ground-resolution per pixel is finer near the poles at a fixed zoom, so
+        // reaching the same real-world scale at higher latitude needs a lower zoom level.
+        val seattleZoom = subject.scaleToZoomInt(35_000.0, 47.6, 1.0)
+        assertEquals(kotlin.math.round(subject.scaleToZoom(35_000.0, 47.6)).toInt(), seattleZoom)
+        assertTrue(seattleZoom < equatorZoom, "Expected latitude-adjusted zoom ($seattleZoom) < equator zoom ($equatorZoom)")
     }
 
     @Test

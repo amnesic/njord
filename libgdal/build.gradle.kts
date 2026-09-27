@@ -1,6 +1,6 @@
 plugins {
-    kotlin("multiplatform")
-    kotlin("plugin.serialization")
+    alias(libs.plugins.kotlin.multiplatform)
+    alias(libs.plugins.kotlin.serialization)
     id("maven-publish")
 }
 
@@ -30,7 +30,7 @@ kotlin {
         compilations.getByName("main") {
             cinterops {
                 val libgdal by creating {
-                    if (hostOs == "Linux") compilerOpts("--sysroot=/", "-I/usr/include/$multiarchTuple", "-D__glibc_clang_prereq(a,b)=0")
+                    if (hostOs == "Linux") compilerOpts("--sysroot=/", "-I/usr/include/$multiarchTuple", "-D__glibc_clang_prereq(a,b)=0", "-Wno-c99-designator", "-Wno-return-type")
                 }
             }
         }
@@ -38,13 +38,16 @@ kotlin {
             staticLib {
                 baseName = "gdal"
             }
+            if (hostOs == "Linux") {
+                getTest("DEBUG").linkerOpts("-L/usr/lib/$multiarchTuple")
+            }
         }
     }
 
     sourceSets {
         nativeMain.dependencies {
-            implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:$serializationVersion")
-            implementation("org.jetbrains.kotlinx:kotlinx-serialization-protobuf:$serializationVersion")
+            implementation(libs.kotlinx.serialization.json)
+            implementation(libs.kotlinx.serialization.protobuf)
             implementation(project(":shared"))
         }
         nativeTest.dependencies {

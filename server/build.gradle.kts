@@ -1,6 +1,6 @@
 plugins {
-    kotlin("multiplatform")
-    kotlin("plugin.serialization")
+    alias(libs.plugins.kotlin.multiplatform)
+    alias(libs.plugins.kotlin.serialization)
 }
 
 group = "io.madrona"
@@ -61,8 +61,13 @@ kotlin {
         binaries {
             executable {
                 entryPoint = "io.madrona.njord.main"
+                /*
+                The libsqlite3.so lists libm.so.6 and libc.so.6 as needed, but its dl* and pthread_* symbols
+                (merged into libc in glibc 2.34) aren't listed — lld's --no-allow-shlib-undefined rejects this.
+                 The fix is --allow-shlib-undefined.
+                 */
                 if (hostOs == "Linux") {
-                    linkerOpts("-L/usr/lib/$multiarchTuple")
+                    linkerOpts("-L/usr/lib/$multiarchTuple", "-lsqlite3", "--allow-shlib-undefined")
                     crossGccLibGcc?.let { linkerOpts(it) }
                 }
                 runTaskProvider?.configure {
@@ -74,7 +79,7 @@ kotlin {
             executable("ingest") {
                 entryPoint = "io.madrona.njord.ingest.ingestMain"
                 if (hostOs == "Linux") {
-                    linkerOpts("-L/usr/lib/$multiarchTuple")
+                    linkerOpts("-L/usr/lib/$multiarchTuple", "-lsqlite3", "--allow-shlib-undefined")
                     crossGccLibGcc?.let { linkerOpts(it) }
                 }
                 runTaskProvider?.configure {
@@ -82,6 +87,10 @@ kotlin {
                         listOf(project.file("./src/nativeMain/resources").absolutePath)
                     })
                 }
+            }
+            if (hostOs == "Linux") {
+                getTest("DEBUG").linkerOpts("-L/usr/lib/$multiarchTuple", "--allow-shlib-undefined")
+                crossGccLibGcc?.let { getTest("DEBUG").linkerOpts(it) }
             }
         }
     }
@@ -92,20 +101,21 @@ kotlin {
             implementation(project(":libgdal"))
             implementation(project(":libpq"))
             implementation(project(":libzip"))
-            implementation("io.ktor:ktor-server-core:${ktorVersion}")
-            implementation("io.ktor:ktor-server-cio:${ktorVersion}")
-            implementation("io.ktor:ktor-server-status-pages:${ktorVersion}")
-            implementation("io.ktor:ktor-server-content-negotiation:${ktorVersion}")
-            implementation("io.ktor:ktor-serialization-kotlinx-json:${ktorVersion}")
-            implementation("io.ktor:ktor-server-auth:${ktorVersion}")
-            implementation("io.ktor:ktor-server-cors:${ktorVersion}")
-            implementation("io.ktor:ktor-server-websockets:${ktorVersion}")
-            implementation("io.ktor:ktor-server-host-common:${ktorVersion}")
-            implementation("io.ktor:ktor-server-forwarded-header:${ktorVersion}")
-            implementation("io.ktor:ktor-client-curl:${ktorVersion}")
+            implementation(project(":libsqlite"))
+            implementation(libs.ktor.server.core)
+            implementation(libs.ktor.server.cio)
+            implementation(libs.ktor.server.status.pages)
+            implementation(libs.ktor.server.content.negotiation)
+            implementation(libs.ktor.serialization.kotlinx.json)
+            implementation(libs.ktor.server.auth)
+            implementation(libs.ktor.server.cors)
+            implementation(libs.ktor.server.websockets)
+            implementation(libs.ktor.server.host.common)
+            implementation(libs.ktor.server.forwarded.header)
+            implementation(libs.ktor.client.curl)
         }
         nativeTest.dependencies {
-            implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:$serializationVersion")
+            implementation(libs.kotlinx.serialization.json)
             implementation(kotlin("test"))
         }
     }

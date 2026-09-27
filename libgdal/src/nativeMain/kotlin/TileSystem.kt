@@ -17,6 +17,7 @@ import kotlin.math.log2
 import kotlin.math.max
 import kotlin.math.min
 import kotlin.math.pow
+import kotlin.math.round
 import kotlin.math.sin
 
 class TileSystem(
@@ -40,6 +41,8 @@ class TileSystem(
         private const val EARTH_CIRCUMFERENCE = 40_075_016.686     // meters at equator
         private const val SCREEN_PIXEL_SIZE_METERS = 0.0254 / 96.0 // 96 dpi screen pixel size in meters
         private const val SCREEN_TILE_SIZE = 256                   // screen pixels per Web Mercator tile
+
+        private const val TWEAK_ZOOM_TO_SCALE_BY = .92
     }
 
 
@@ -73,6 +76,17 @@ class TileSystem(
         val latRad = latitudeDegrees * PI / 180.0
         return EARTH_CIRCUMFERENCE * cos(latRad) / (SCREEN_TILE_SIZE * 2.0.pow(zoom) * SCREEN_PIXEL_SIZE_METERS)
     }
+
+    /**
+     * Convert a map scale denominator to a whole zoom level at the given latitude,
+     * rounded to the nearest integer zoom.
+     * @param scaleDenominator the "1:X" denominator (e.g. 50000 for 1:50,000)
+     * @param latitudeDegrees the map centroid latitude in degrees
+     * @param tweakBy the amount as to multiply the calculated zoom by before it is rounded - defaults to [TWEAK_ZOOM_TO_SCALE_BY]
+     * @return zoom level rounded to the nearest Int
+     */
+    fun scaleToZoomInt(scaleDenominator: Double, latitudeDegrees: Double, tweakBy: Double = TWEAK_ZOOM_TO_SCALE_BY): Int =
+        round(scaleToZoom(scaleDenominator, latitudeDegrees) * tweakBy).toInt()
 
     /**
      * converts a pixel x,y coordinates at a specified level of detail into
@@ -171,3 +185,5 @@ class TileSystem(
         return Position(tileX, tileY)
     }
 }
+
+val tileSystem = TileSystem()

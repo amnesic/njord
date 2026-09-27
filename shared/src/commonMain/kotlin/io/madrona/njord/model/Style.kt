@@ -1,6 +1,6 @@
 package io.madrona.njord.model
 
-import io.madrona.njord.geojson.Feature
+import io.madrona.njord.geojson.GeoJsonObject
 import kotlinx.serialization.EncodeDefault
 import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.SerialName
@@ -29,6 +29,8 @@ data class Layer(
     @SerialName("source-layer") val sourceLayer: String? = null,
     val filter: JsonElement? = null,
     val layout: Layout? = null,
+    @SerialName("minzoom") val minZoom: Int? = null,
+    @SerialName( "maxzoom") val maxZoomExclusive: Int? = null,
 )
 
 @Serializable
@@ -94,6 +96,7 @@ data class Layout(
     @SerialName("text-size") val textSize: Float? = null,
     @SerialName("text-padding") val textPadding: Float? = null,
     @SerialName("symbol-placement") val symbolPlacement: Placement? = null,
+    @SerialName("symbol-sort-key") val symbolSortKey: JsonElement? = null,
 )
 
 @Serializable
@@ -160,6 +163,9 @@ enum class Anchor {
 
     @SerialName("bottom")
     BOTTOM,
+
+    @SerialName("top")
+    TOP,
 
     @SerialName("top-left")
     TOP_LEFT,
@@ -228,7 +234,9 @@ data class Source(
 
     @SerialName("url") val tileJsonUrl: String? = null, // "https://localhost:9000/v1/tile_json"
 
-    val data: Feature? = null,
+    @SerialName("promoteId") val promoteId: String? = null,
+
+    val data: GeoJsonObject? = null,
 ) {
     companion object {
         const val SENC = "src_senc"

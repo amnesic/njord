@@ -9,7 +9,7 @@ import kotlinx.serialization.json.JsonElement
 
 @Serializable
 class ChartInfo(
-    val id: Long,
+    val name: String,
     val scale: Int,
     val zoom: Int,
     val covrWKB: ByteArray
@@ -32,7 +32,6 @@ class ChartFeature(
 
 @Serializable
 data class Chart(
-    val id: Long,
     val name: String,
     val scale: Int,
     @SerialName("file_name") val fileName: String,
