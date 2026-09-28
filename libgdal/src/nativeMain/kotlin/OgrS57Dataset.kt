@@ -88,7 +88,13 @@ class OgrS57Dataset(val file: File) {
                     val envelope = geom.envelope()
                     covrSouth = min(covrSouth, envelope.south)
                     covrNorth = max(covrNorth, envelope.north)
-                }?.geoJson()
+                }?.geoJson()?.let { geoJson ->
+                    when (geoJson) {
+                        is Polygon -> repairCoverage(geoJson)
+                        is MultiPolygon -> MultiPolygon(geoJson.coordinates.map { repairCoverage(Polygon(it)).coordinates })
+                        else -> geoJson
+                    }.also { if (it != geoJson) println("warning: ${file.name} M_COVR coverage was invalid and has been repaired") }
+                }
             } else {
                 null
             }

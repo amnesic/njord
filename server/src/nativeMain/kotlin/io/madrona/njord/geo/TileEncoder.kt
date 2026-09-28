@@ -115,13 +115,14 @@ class TileEncoder(
         val (charts, cd) = measureTimedValue {
             chartDao.findInfoAsync(tileEnvelope.wkb)
         }
-        chartQueryDuration
         chartQueryDuration = cd
-        charts?.let { charts ->
+        if (charts == null) throw TileRenderException("chart query failed for tile $z/$x/$y")
+        charts.let { charts ->
             val eligibleChartNames = charts.filter { isChartEligible(it.zoom) }.map { it.name }
 
             val (allFeatures, fd) = measureTimedValue {
-                chartDao.findAllChartFeaturesAsync4326(tileWkb, eligibleChartNames, z) ?: emptyMap()
+                chartDao.findAllChartFeaturesAsync4326(tileWkb, eligibleChartNames, z)
+                    ?: throw TileRenderException("chart feature query failed for tile $z/$x/$y")
             }
             featureQueryDuration += fd
 
@@ -203,7 +204,9 @@ class TileEncoder(
 
     private suspend fun renderBaseMap(include: OgrGeometry) {
         baseMapDuration = measureTimedValue {
-            baseFeatureDao.findFeaturesAsync(findBaseMapScale(z), include.wkb)?.forEach { feature ->
+            val features = baseFeatureDao.findFeaturesAsync(findBaseMapScale(z), include.wkb)
+                ?: throw TileRenderException("base map query failed for tile $z/$x/$y")
+            features.forEach { feature ->
                 val props = layerFactory.preTileEncode(feature).props.filtered()
                 feature.geomWKB?.let { OgrGeometry.fromWkb4326(it) }
                     ?.takeIf { it.isValid && !it.isEmpty() }
@@ -258,3 +261,9 @@ class TileEncoder(
     }
 
 }
+
+/**
+ * A query needed to render a tile failed. The tile must not be served (or cached) as if it were
+ * complete: an empty-but-200 tile would be kept by the tile cache and by the reverse proxy.
+ */
+class TileRenderException(message: String) : Exception(message)

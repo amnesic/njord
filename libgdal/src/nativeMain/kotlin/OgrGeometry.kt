@@ -4,6 +4,7 @@ import Gdal.epsg4326
 import io.madrona.njord.geojson.BoundingBox
 import io.madrona.njord.geojson.Geometry
 import io.madrona.njord.geojson.Position
+import io.madrona.njord.geojson.jsonStr
 import kotlinx.cinterop.*
 import kotlinx.serialization.json.Json.Default.decodeFromString
 import libgdal.*
@@ -303,6 +304,13 @@ open class OgrGeometry(
                 geoInput.value?.let {
                     OgrGeometry(it)
                 }
+            }
+        }
+
+        fun fromGeoJson4326(geometry: Geometry): OgrGeometry? {
+            return OGR_G_CreateGeometryFromJson(geometry.jsonStr())?.let {
+                OGR_G_AssignSpatialReference(it, epsg4326)
+                OgrGeometry(it)
             }
         }
 
