@@ -70,25 +70,51 @@ Le clone ne doit contenir aucun secret. `njord/chart_server_db/userlist.txt` est
 de l'amont (`mysecretpassword`) ; celui de la prod est `~/Development/Njord/secrets/userlist.txt`,
 monté par le compose (chemin relatif au compose : `./secrets/userlist.txt`).
 
-Le `Containerfile` ne compile pas le front : il copie `web/build/dist/js/productionExecutable`.
-Le construire sur le serveur s'il y a un JDK 17, sinon l'envoyer depuis le Mac, où il est déjà
-construit (du JS, indépendant de la plateforme) :
+## 3. Image
+
+Le `Containerfile` ne compile pas le front : il copie `web/build/dist/js/productionExecutable`,
+qui doit donc exister dans le contexte de build. Deux méthodes :
+
+### A. Sur le Mac, puis ghcr (méthode de la 1.2)
+
+La 1.2 a été construite ainsi (image créée le 2026-03-28 sur le Mac, poussée sur ghcr, récupérée
+sur le serveur par `docker pull`). Le front est compilé sur le Mac et part dans l'image. La
+compilation Kotlin/Native en `linux/amd64` passe par l'émulation sur Apple Silicon : c'est lent.
 
 ```bash
-# depuis le Mac
-rsync -av --delete ~/Development/01_GeoGarage/20_Dev/njord/web/build/dist/js/productionExecutable/ \
+# sur le Mac
+./gradlew :web:jsBrowserDistribution
+docker buildx build --platform linux/amd64 -f Containerfile \
+  -t ghcr.io/amnesic/njord-chart-server:1.4-SNAPSHOT --push .
+# sur le serveur
+docker pull ghcr.io/amnesic/njord-chart-server:1.4-SNAPSHOT
+```
+
+### B. Sur le serveur (méthode de la 1.4)
+
+Compilation native amd64, plus rapide, mais qui charge une machine servant d'autres sites.
+Le serveur n'a pas de JDK : le front vient du Mac, où il est déjà compilé (du JS, indépendant
+de la plateforme).
+
+```bash
+# depuis le Mac (le rsync 3.1 du serveur ne connaît pas --mkpath)
+ssh caas.geogarage.com mkdir -p Development/Njord/njord/web/build/dist/js/productionExecutable
+rsync -a --delete ~/Development/01_GeoGarage/20_Dev/njord/web/build/dist/js/productionExecutable/ \
   caas.geogarage.com:Development/Njord/njord/web/build/dist/js/productionExecutable/
 ```
 
-## 3. Image
+Le Docker du serveur (19.03) ne connaît pas `RUN --mount` sans la syntaxe Dockerfile récente,
+qu'on active par argument sans toucher au `Containerfile` :
 
 ```bash
 cd ~/Development/Njord/njord
-docker build -f Containerfile -t ghcr.io/amnesic/njord-chart-server:1.4-SNAPSHOT .
+DOCKER_BUILDKIT=1 docker build --build-arg BUILDKIT_SYNTAX=docker/dockerfile:1 \
+  -f Containerfile -t ghcr.io/amnesic/njord-chart-server:1.4-SNAPSHOT . > ../build-1.4.log 2>&1
 ```
 
-La compilation Kotlin/Native release prend du temps et beaucoup de CPU, sur une machine qui sert
-aussi les autres services. L'image embarque GDAL 3.6.2 (Debian 12), comme la version actuelle.
+L'image n'existe alors que sur le serveur. La pousser sur ghcr si on veut la garder ailleurs.
+
+Dans les deux cas, l'image embarque GDAL 3.6.2 (Debian 12), comme la 1.2.
 
 ## 4. Mise en service
 
@@ -102,7 +128,26 @@ docker compose up -d           # recrée njord (nouvelle image) et pgbouncer si 
 docker compose logs -f njord   # attendre "DB schema migrated to version 3" puis "Responding at"
 ```
 
-Le conteneur étant recréé, le cache de tuiles repart vide.
+Le conteneur étant recréé, le cache interne de njord repart vide.
+
+Dès que njord répond, mettre à jour les statistiques : la colonne `chart_name` est nouvelle et la
+dernière analyse date d'avant la migration. Sans ça, le planificateur choisit mal ses index et
+certaines tuiles z10 dépassent 90 s (vu le 2026-09-28), au-delà du délai de nginx :
+
+```bash
+docker exec njord-postgres-1 psql -U admin -d s57server -c "ANALYZE charts" -c "ANALYZE features"
+```
+
+**Cache nginx.** nginx garde lui aussi les tuiles, 30 jours (`proxy_cache mvt_cache`, dossier
+`/var/cache/nginx/mvt`, déclaré en tête de `/etc/nginx/sites-available/caas-mvt.geogarage.com.conf`).
+Sans purge, les anciennes tuiles (sans l'offset) restent servies (`X-Cache-Status: HIT`). Il
+appartient à `www-data` : il faut `sudo`.
+
+```bash
+sudo find /var/cache/nginx/mvt -type f -delete
+sudo systemctl reload nginx
+curl -sI https://caas-mvt.geogarage.com/v1/tile/11/1011/719 | grep -i x-cache   # MISS, puis HIT
+```
 
 ## 5. Vérifications
 
