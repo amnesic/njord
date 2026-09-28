@@ -25,7 +25,11 @@ class TileEncoder(
     val layerFactory: LayerFactory = Singletons.layerFactory,
     val s57ObjectLibrary: S57ObjectLibrary = Singletons.s57ObjectLibrary,
     val baseFeatureDao: BaseFeatureDao = Singletons.baseFeatureDao,
+    val chartZoomOffset: Int = Singletons.config.chartZoomOffset,
 ) {
+
+    private fun isChartEligible(chartZoom: Int): Boolean =
+        chartZoom >= 0 && chartZoom - chartZoomOffset <= z
 
     var chartQueryDuration: Duration = Duration.ZERO
         private set
@@ -114,7 +118,7 @@ class TileEncoder(
         chartQueryDuration
         chartQueryDuration = cd
         charts?.let { charts ->
-            val eligibleChartNames = charts.filter { it.zoom in 0..z }.map { it.name }
+            val eligibleChartNames = charts.filter { isChartEligible(it.zoom) }.map { it.name }
 
             val (allFeatures, fd) = measureTimedValue {
                 chartDao.findAllChartFeaturesAsync4326(tileWkb, eligibleChartNames, z) ?: emptyMap()
@@ -123,7 +127,7 @@ class TileEncoder(
 
             charts.forEach { chart ->
                 val chartGeo = OgrGeometry.fromWkb4326(chart.covrWKB) ?: error("chart cover geo not valid")
-                if (!include.isEmpty() && chart.zoom in 0..z) {
+                if (!include.isEmpty() && isChartEligible(chart.zoom)) {
                     val chartInclude = include
                     allFeatures[chart.name]?.forEach { feature ->
 

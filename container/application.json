@@ -16,5 +16,6 @@
     "chartIngestWorkers": 5,
     "enableIngestion": true,
     "useTileCache": true,
+    "chartZoomOffset": 1,
     "regionExports": []
 }

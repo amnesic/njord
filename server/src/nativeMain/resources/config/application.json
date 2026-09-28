@@ -16,6 +16,7 @@
   "chartIngestWorkers": 5,
   "enableIngestion": true,
   "useTileCache": false,
+  "chartZoomOffset": 1,
   "regionExports": [
     {
       "name": "WORLD",

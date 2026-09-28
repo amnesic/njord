@@ -29,4 +29,9 @@ data class ChartsConfig(
     val useTileCache: Boolean = true,
     val enableIngestion: Boolean = true,
     val regionExports: List<RegionExportConfig> = emptyList(),
+    /**
+     * How many zoom levels before its compiled-scale zoom (charts.zoom) a chart starts being
+     * rendered. 0 keeps the upstream behaviour; applied at tile time, so no re-ingest is needed.
+     */
+    val chartZoomOffset: Int = 0,
 )
