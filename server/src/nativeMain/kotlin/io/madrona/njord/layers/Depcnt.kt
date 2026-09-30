@@ -2,6 +2,9 @@ package io.madrona.njord.layers
 
 import io.madrona.njord.ext.json
 import io.madrona.njord.model.*
+import kotlinx.serialization.json.JsonElement
+import kotlinx.serialization.json.JsonObject
+import kotlinx.serialization.json.JsonPrimitive
 
 /**
  * DEPCNT, Depth Contour
@@ -22,20 +25,64 @@ import io.madrona.njord.model.*
  * sounding; depth area; coastline;
  */
 class Depcnt : Layerable() {
-    override fun layers(options: LayerableOptions): Sequence<Layer> {
-        return sequenceOf(
-            Layer(
-                id = "depth_contour",
-                type = LayerType.LINE,
-                sourceLayer = sourceLayer,
-                filter = listOf(
-                    Filters.all,
-                    Filters.eqTypeLineString
-                ).json,
-                paint = Paint(
-                    lineColor = colorFrom(Color.CSTLN, options.theme).json,
-                    lineWidth = 0.5f
-                )
+    override fun layers(options: LayerableOptions): Sequence<Layer> = sequenceOf(
+        Layer(
+            id = "${key}_line",
+            type = LayerType.LINE,
+            sourceLayer = sourceLayer,
+            filter = Filters.eqTypeLineString,
+            layout = Layout(lineJoin = LineJoin.ROUND, lineCap = LineCap.ROUND),
+            paint = Paint(
+                lineColor = colorFrom(Color.DEPCN, options.theme).json,
+                lineWidth = 0.5f
+            )
+        ),
+        Layer(
+            id = "${key}_label",
+            type = LayerType.SYMBOL,
+            sourceLayer = sourceLayer,
+            filter = listOf(Filters.all, Filters.eqTypeLineString, listOf("has", "VALDCO")).json,
+            layout = Layout(
+                textFont = listOf(Font.ROBOTO_BOLD),
+                textField = contourValue(options.depth),
+                textSize = 12f,
+                symbolPlacement = Placement.LINE,
+            ),
+            paint = Paint(
+                textColor = colorFrom(Color.DEPCN, options.theme).json,
+                textHaloColor = colorFrom(Color.DEPDW, options.theme),
+                textHaloWidth = 2f
+            )
+        ),
+    )
+
+    /**
+     * VALDCO is always metres. Converted in the style rather than pre-encoded in the tile, so the
+     * same tiles serve the three depth units. Drying contours are negative and keep their sign.
+     * Feet are whole: `number-format` would group 1000 ft contours as `1,000`.
+     */
+    private fun contourValue(depth: Depth): JsonElement = when (depth) {
+        Depth.METERS -> listOf("number-format", listOf("get", "VALDCO"), upToOneFractionDigit)
+        Depth.FATHOMS -> listOf(
+            "number-format",
+            listOf("*", listOf("get", "VALDCO"), FATHOMS_PER_METER),
+            upToOneFractionDigit,
+        )
+        Depth.FEET -> listOf(
+            "to-string",
+            listOf("round", listOf("*", listOf("get", "VALDCO"), FEET_PER_METER)),
+        )
+    }.json
+
+    companion object {
+        private const val FEET_PER_METER = 3.28084
+        private const val FATHOMS_PER_METER = 0.546807
+
+        /** Locale pinned so the decimal separator doesn't follow the viewer's browser locale. */
+        private val upToOneFractionDigit = JsonObject(
+            mapOf(
+                "locale" to JsonPrimitive("en-US"),
+                "max-fraction-digits" to JsonPrimitive(1),
             )
         )
     }
