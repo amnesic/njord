@@ -49,6 +49,8 @@ patterns = {"DRGARE01P": standard_pattern,
             "FSHHAV02P": standard_pattern,
             "FSHFAC04P": standard_pattern,
             "FSHFAC03P": standard_pattern,
+            # S-101 RCKLDG01 is a plain rectangular grid, no row offset
+            "RCKLDG01P": [[1]],
             }
 
 

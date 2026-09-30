@@ -126,6 +126,9 @@ class StandardLayers {
         //land / base layers
         Depare(),
         Depcnt(),
+        Sbdare(),
+        Admare(),
+        Tesare(),
         Lndare(),
         Slogrd(),
         Lakare(),
@@ -260,6 +263,8 @@ class StandardLayers {
         ClearanceLabel("GATCON"),
         Curent(),
 
+        Magvar(),
+
         // lights
         Litflt(),
         Litves(),
@@ -267,7 +272,6 @@ class StandardLayers {
         Prdare(),
 
 //        todo: Missing Layers
-//        Sbdare(),
 //        Tsfeb(),
 //        Watfal(),
 //
@@ -276,7 +280,6 @@ class StandardLayers {
 //        Rscsta(),
 //        Spring(),
 //        Locmag(),
-//        Magvar(),
 //        Lndelv(),
 //        Mnpub(),
 //        Wattur(),
@@ -294,8 +297,6 @@ class StandardLayers {
 //        Cuszne(),
 //        Exezne(),
 //        Fshzne(),
-//        Tesare(),
-//        Admare(),
 //        Hrbare(),
 //        Drydoc(),
 //        Gridrn(),

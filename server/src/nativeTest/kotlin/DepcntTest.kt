@@ -39,12 +39,12 @@ class DepcntTest {
         assertEquals("DEPCNT_label", label.id)
         assertEquals(Placement.LINE, label.layout?.symbolPlacement)
         listOf(line, label).forEach { assertEquals("DEPCNT", it.sourceLayer) }
-        assertTrue(label.filter.toString().contains("\"VALDCO\""))
+        assertTrue(label.filter.toString().contains("[\">=\",\"VALDCO\",0]"))
     }
 
     @Test
     fun `label reads VALDCO and converts it per depth unit`() {
-        assertTrue(label(Depth.METERS).startsWith("[\"number-format\",[\"get\",\"VALDCO\"]"))
+        assertTrue(label(Depth.METERS).startsWith("[\"case\",[\"<\",[\"get\",\"VALDCO\"],31]"))
         assertTrue(label(Depth.FEET).contains("3.28084"))
         assertTrue(label(Depth.FEET).contains("\"round\""))
         assertTrue(label(Depth.FATHOMS).contains("0.546807"))

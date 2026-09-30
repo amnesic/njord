@@ -23,6 +23,9 @@ import kotlinx.serialization.json.JsonPrimitive
  * Drying contours are encoded with negative values.
  * Distinction:
  * sounding; depth area; coastline;
+ *
+ * Portrayal follows S-101 DEPCNT03 / SAFCON01: solid DEPCN 0.32 mm, value along the line. The
+ * dashed variant for poor positional accuracy is not drawn: njord does not expose QUAPOS.
  */
 class Depcnt : Layerable() {
     override fun layers(options: LayerableOptions): Sequence<Layer> = sequenceOf(
@@ -34,14 +37,15 @@ class Depcnt : Layerable() {
             layout = Layout(lineJoin = LineJoin.ROUND, lineCap = LineCap.ROUND),
             paint = Paint(
                 lineColor = colorFrom(Color.DEPCN, options.theme).json,
-                lineWidth = 0.5f
+                lineWidth = 1f
             )
         ),
         Layer(
             id = "${key}_label",
             type = LayerType.SYMBOL,
             sourceLayer = sourceLayer,
-            filter = listOf(Filters.all, Filters.eqTypeLineString, listOf("has", "VALDCO")).json,
+            // SAFCON01 labels nothing below 0: drying contours stay unlabelled
+            filter = listOf(Filters.all, Filters.eqTypeLineString, listOf(">=", "VALDCO", 0)).json,
             layout = Layout(
                 textFont = listOf(Font.ROBOTO_BOLD),
                 textField = contourValue(options.depth),
@@ -58,11 +62,16 @@ class Depcnt : Layerable() {
 
     /**
      * VALDCO is always metres. Converted in the style rather than pre-encoded in the tile, so the
-     * same tiles serve the three depth units. Drying contours are negative and keep their sign.
-     * Feet are whole: `number-format` would group 1000 ft contours as `1,000`.
+     * same tiles serve the three depth units. Metres follow S-101 SAFCON01: one decimal below
+     * 31 m, whole metres above. Feet are whole: `number-format` would group 1000 ft as `1,000`.
      */
     private fun contourValue(depth: Depth): JsonElement = when (depth) {
-        Depth.METERS -> listOf("number-format", listOf("get", "VALDCO"), upToOneFractionDigit)
+        Depth.METERS -> listOf(
+            "case",
+            listOf("<", listOf("get", "VALDCO"), 31),
+            listOf("number-format", listOf("get", "VALDCO"), upToOneFractionDigit),
+            listOf("number-format", listOf("get", "VALDCO"), wholeNumber),
+        )
         Depth.FATHOMS -> listOf(
             "number-format",
             listOf("*", listOf("get", "VALDCO"), FATHOMS_PER_METER),
@@ -83,6 +92,12 @@ class Depcnt : Layerable() {
             mapOf(
                 "locale" to JsonPrimitive("en-US"),
                 "max-fraction-digits" to JsonPrimitive(1),
+            )
+        )
+        private val wholeNumber = JsonObject(
+            mapOf(
+                "locale" to JsonPrimitive("en-US"),
+                "max-fraction-digits" to JsonPrimitive(0),
             )
         )
     }
