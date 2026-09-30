@@ -15,7 +15,9 @@ data class Style(
     val name: String,
     val sources: Map<String, Source>,
     @SerialName("sprite") val spriteUrl: String,
-    val version: Int
+    val version: Int,
+    /** Free-form, per the style spec. njord puts the S-101 display modes and layers here. */
+    val metadata: JsonElement? = null,
 )
 
 @Serializable
@@ -31,6 +33,8 @@ data class Layer(
     val layout: Layout? = null,
     @SerialName("minzoom") val minZoom: Int? = null,
     @SerialName( "maxzoom") val maxZoomExclusive: Int? = null,
+    /** Free-form, per the style spec. njord puts the S-101 viewing group here. */
+    val metadata: JsonElement? = null,
 )
 
 @Serializable

@@ -51,7 +51,8 @@ class StyleHandler(
                     )
                 ),
                 layers = layerFactory.layers(LayerableOptions(depth, theme)),
-                version = 8
+                version = 8,
+                metadata = layerFactory.styleMetadata,
             )
         )
     }

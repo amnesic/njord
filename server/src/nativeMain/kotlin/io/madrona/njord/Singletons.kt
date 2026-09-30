@@ -17,6 +17,7 @@ import io.madrona.njord.geo.symbols.S57ObjectLibrary
 import io.madrona.njord.ingest.IngestStatus
 import io.madrona.njord.ingest.RegionExportWorker
 import io.madrona.njord.layers.LayerFactory
+import io.madrona.njord.layers.S101ViewingGroups
 import io.madrona.njord.model.ColorLibrary
 import io.madrona.njord.util.DistributedLock
 import io.madrona.njord.util.SpriteSheet
@@ -109,6 +110,7 @@ object Singletons {
 
     val tileSystem by lazy { TileSystem() }
 
+    val s101ViewingGroups by lazy { S101ViewingGroups() }
     val layerFactory by lazy { LayerFactory() }
 
     val s57ObjectLibrary by lazy { S57ObjectLibrary() }

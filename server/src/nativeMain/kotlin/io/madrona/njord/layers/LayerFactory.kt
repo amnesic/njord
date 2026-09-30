@@ -7,7 +7,9 @@ import io.madrona.njord.layers.set.ExtraLayers
 import io.madrona.njord.layers.set.InlandLayers
 import io.madrona.njord.layers.set.StandardLayers
 import io.madrona.njord.model.*
-
+import kotlinx.serialization.json.JsonElement
+import kotlinx.serialization.json.JsonObject
+import kotlinx.serialization.json.JsonPrimitive
 class LayerFactory(
     private val baseLayers: BaseLayers = BaseLayers(),
     private val standardLayers: StandardLayers = StandardLayers(),
@@ -15,7 +17,19 @@ class LayerFactory(
     private val extraLayers: ExtraLayers = ExtraLayers(),
     private val config: ChartsConfig = Singletons.config,
     private val colorLibrary: ColorLibrary = Singletons.colorLibrary,
+    private val s101: S101ViewingGroups = Singletons.s101ViewingGroups,
 ) {
+
+    private val baseKeys: Set<String> by lazy { baseLayers.layers.map { it.key }.toSet() }
+
+    /** The njord world base map (Natural Earth) is not chart data and has no S-101 feature type. */
+    private val basemapMetadata = JsonObject(mapOf("njord:basemap" to JsonPrimitive(true)))
+
+    val styleMetadata: JsonElement? get() = s101.styleMetadata
+
+    private fun Layer.withMetadata(layerable: Layerable): Layer = copy(
+        metadata = if (layerable.key in baseKeys) basemapMetadata else s101.metadataFor(this)
+    )
 
     private val layerablesMap: Map<String, Layerable> by lazy {
         (baseLayers.layers + standardLayers.layers + inlandLayers.layers + extraLayers.layers).let {
@@ -41,8 +55,8 @@ class LayerFactory(
         }
 
         optionList.associateWith { options ->
-            layerablesMap.values.asSequence().flatMap {
-                it.layers(options)
+            layerablesMap.values.asSequence().flatMap { layerable ->
+                layerable.layers(options).map { it.withMetadata(layerable) }
             }
         }
     }

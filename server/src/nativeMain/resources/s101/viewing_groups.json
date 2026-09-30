@@ -1,0 +1,2369 @@
+{
+ "source": {
+  "portrayalCatalogue": {
+   "repo": "iho-ohi/S-101_Portrayal-Catalogue",
+   "commit": "152940b403f0d38b7237baa925427b5581a6c6e7"
+  },
+  "featureCatalogue": {
+   "repo": "iho-ohi/S-101-Documentation-and-FC",
+   "commit": "d0dcb87064bd3fefaaa13f93eb994bb5c93e8a8c",
+   "path": "S-101FC/FeatureCatalogue.xml"
+  }
+ },
+ "displayModes": [
+  {
+   "id": "DisplayBase",
+   "name": "Display Base",
+   "viewingGroupLayers": [
+    "1"
+   ]
+  },
+  {
+   "id": "StandardDisplay",
+   "name": "Standard Display",
+   "viewingGroupLayers": [
+    "1",
+    "2",
+    "3",
+    "3a",
+    "3b",
+    "4",
+    "5",
+    "6",
+    "7",
+    "8",
+    "9",
+    "10"
+   ]
+  },
+  {
+   "id": "OtherInformation",
+   "name": "Other Information",
+   "viewingGroupLayers": [
+    "1",
+    "2",
+    "3",
+    "3a",
+    "3b",
+    "4",
+    "5",
+    "6",
+    "7",
+    "8",
+    "9",
+    "10",
+    "11",
+    "12",
+    "13",
+    "14",
+    "15",
+    "16",
+    "17",
+    "18"
+   ]
+  }
+ ],
+ "viewingGroupLayers": [
+  {
+   "id": "1",
+   "name": "Display Base",
+   "viewingGroups": [
+    11010,
+    11030,
+    11040,
+    11050,
+    11060,
+    12010,
+    12200,
+    12210,
+    12400,
+    12410,
+    12420,
+    13010,
+    13030,
+    14010,
+    14020,
+    14050,
+    15110
+   ]
+  },
+  {
+   "id": "2",
+   "name": "Drying Line",
+   "viewingGroups": [
+    22010
+   ]
+  },
+  {
+   "id": "3",
+   "name": "Buoys, beacons, aids to navigation",
+   "viewingGroups": [
+    21020,
+    22200,
+    22210,
+    22220,
+    22240,
+    27010,
+    27011,
+    27020,
+    27030,
+    27025,
+    27040,
+    27050,
+    27060,
+    27070,
+    27080,
+    27200,
+    27210,
+    27220,
+    27230,
+    27240
+   ]
+  },
+  {
+   "id": "3a",
+   "name": "Buoys, beacons, structures",
+   "viewingGroups": [
+    21020,
+    22200,
+    22210,
+    22220,
+    22240,
+    27010,
+    27011,
+    27020,
+    27025,
+    27030,
+    27040,
+    27050,
+    27060,
+    27080,
+    27200,
+    27210,
+    27230
+   ]
+  },
+  {
+   "id": "3b",
+   "name": "Lights",
+   "viewingGroups": [
+    27070
+   ]
+  },
+  {
+   "id": "4",
+   "name": "Boundaries and limits",
+   "viewingGroups": [
+    23030,
+    26050,
+    26220,
+    26240,
+    26250
+   ]
+  },
+  {
+   "id": "5",
+   "name": "Prohibited and restricted areas",
+   "viewingGroups": [
+    26010,
+    26040
+   ]
+  },
+  {
+   "id": "6",
+   "name": "Chart scale boundaries",
+   "viewingGroups": [
+    21030
+   ]
+  },
+  {
+   "id": "7",
+   "name": "Cautionary notes",
+   "viewingGroups": [
+    26150
+   ]
+  },
+  {
+   "id": "8",
+   "name": "Ships' routeing systems and ferry routes",
+   "viewingGroups": [
+    25010,
+    25020,
+    25030,
+    25040,
+    25060
+   ]
+  },
+  {
+   "id": "9",
+   "name": "Archipelagic sea lanes",
+   "viewingGroups": [
+    26260
+   ]
+  },
+  {
+   "id": "10",
+   "name": "Miscellaneous (Standard)",
+   "viewingGroups": [
+    21010,
+    21060,
+    24010,
+    24020,
+    24050,
+    25001,
+    26200,
+    26210,
+    28010,
+    28020
+   ]
+  },
+  {
+   "id": "11",
+   "name": "Spot soundings",
+   "viewingGroups": [
+    33010
+   ]
+  },
+  {
+   "id": "12",
+   "name": "Submarine cables and pipelines",
+   "viewingGroups": [
+    34030,
+    34070
+   ]
+  },
+  {
+   "id": "13",
+   "name": "All isolated dangers",
+   "viewingGroups": [
+    34050,
+    34051
+   ]
+  },
+  {
+   "id": "14",
+   "name": "Magnetic variation",
+   "viewingGroups": [
+    31080
+   ]
+  },
+  {
+   "id": "15",
+   "name": "Depth contours",
+   "viewingGroups": [
+    33020
+   ]
+  },
+  {
+   "id": "16",
+   "name": "Seabed",
+   "viewingGroups": [
+    34010,
+    34020,
+    33040
+   ]
+  },
+  {
+   "id": "17",
+   "name": "Tidal",
+   "viewingGroups": [
+    33050,
+    33060
+   ]
+  },
+  {
+   "id": "18",
+   "name": "Miscellaneous (Other)",
+   "viewingGroups": [
+    31010,
+    31020,
+    31040,
+    32010,
+    32030,
+    32050,
+    32070,
+    32200,
+    32220,
+    32240,
+    32250,
+    32270,
+    32400,
+    32410,
+    32440,
+    36010,
+    36020,
+    36040,
+    36050,
+    36060,
+    38010,
+    38030,
+    38200,
+    38210
+   ]
+  },
+  {
+   "id": "900",
+   "name": "Shallow pattern",
+   "viewingGroups": [
+    90000
+   ]
+  },
+  {
+   "id": "910",
+   "name": "Accuracy",
+   "viewingGroups": [
+    90010,
+    90011
+   ]
+  },
+  {
+   "id": "920",
+   "name": "Feature highlights",
+   "viewingGroups": [
+    90020,
+    90021,
+    90022
+   ]
+  },
+  {
+   "id": "920a",
+   "name": "Highlight info",
+   "viewingGroups": [
+    90020
+   ]
+  },
+  {
+   "id": "920b",
+   "name": "Highlight document",
+   "viewingGroups": [
+    90021
+   ]
+  },
+  {
+   "id": "920c",
+   "name": "Highlight date dependent",
+   "viewingGroups": [
+    90022
+   ]
+  },
+  {
+   "id": "930",
+   "name": "Contour label",
+   "viewingGroups": [
+    90030,
+    90031
+   ]
+  },
+  {
+   "id": "940",
+   "name": "Update review",
+   "viewingGroups": [
+    90040
+   ]
+  },
+  {
+   "id": "100",
+   "name": "Chart text",
+   "viewingGroups": [
+    11,
+    21,
+    23,
+    24,
+    25,
+    26,
+    27,
+    28,
+    29,
+    30,
+    32
+   ]
+  },
+  {
+   "id": "101",
+   "name": "Important Text",
+   "viewingGroups": [
+    11
+   ]
+  },
+  {
+   "id": "102",
+   "name": "Other Text",
+   "viewingGroups": [
+    21,
+    23,
+    24,
+    25,
+    26,
+    27,
+    28,
+    29,
+    30,
+    32
+   ]
+  },
+  {
+   "id": "102a",
+   "name": "Names",
+   "viewingGroups": [
+    21,
+    26,
+    29
+   ]
+  },
+  {
+   "id": "102b",
+   "name": "Light description",
+   "viewingGroups": [
+    23
+   ]
+  },
+  {
+   "id": "102c",
+   "name": "All other chart text",
+   "viewingGroups": [
+    24,
+    25,
+    27,
+    28,
+    30,
+    32
+   ]
+  }
+ ],
+ "classes": {
+  "ACHARE": {
+   "features": [
+    "AnchorageArea"
+   ],
+   "viewingGroup": 26220,
+   "viewingGroups": [
+    26220
+   ],
+   "textViewingGroup": 26,
+   "viewingGroupLayer": "4",
+   "displayMode": "StandardDisplay",
+   "textViewingGroupLayer": "102a"
+  },
+  "ACHBRT": {
+   "features": [
+    "AnchorBerth"
+   ],
+   "viewingGroup": 26220,
+   "viewingGroups": [
+    26220
+   ],
+   "textViewingGroup": 29,
+   "viewingGroupLayer": "4",
+   "displayMode": "StandardDisplay",
+   "textViewingGroupLayer": "102a"
+  },
+  "ADMARE": {
+   "features": [
+    "AdministrationArea",
+    "VesselTrafficServiceArea"
+   ],
+   "viewingGroup": 36050,
+   "viewingGroups": [
+    36050
+   ],
+   "textViewingGroup": 21,
+   "viewingGroupLayer": "18",
+   "displayMode": "OtherInformation",
+   "textViewingGroupLayer": "102a"
+  },
+  "AIRARE": {
+   "features": [
+    "AirportAirfield"
+   ],
+   "viewingGroup": 32240,
+   "viewingGroups": [
+    32240
+   ],
+   "viewingGroupLayer": "18",
+   "displayMode": "OtherInformation"
+  },
+  "ARCSLN": {
+   "features": [
+    "ArchipelagicSeaLaneArea"
+   ],
+   "viewingGroup": 26260,
+   "viewingGroups": [
+    26260
+   ],
+   "viewingGroupLayer": "9",
+   "displayMode": "StandardDisplay"
+  },
+  "ASLXIS": {
+   "features": [
+    "ArchipelagicSeaLaneAxis"
+   ],
+   "viewingGroup": 26260,
+   "viewingGroups": [
+    26260
+   ],
+   "viewingGroupLayer": "9",
+   "displayMode": "StandardDisplay"
+  },
+  "BCNCAR": {
+   "features": [
+    "CardinalBeacon"
+   ],
+   "viewingGroup": 27020,
+   "viewingGroups": [
+    27020
+   ],
+   "textViewingGroup": 21,
+   "viewingGroupLayer": "3a",
+   "displayMode": "StandardDisplay",
+   "textViewingGroupLayer": "102a"
+  },
+  "BCNISD": {
+   "features": [
+    "IsolatedDangerBeacon"
+   ],
+   "viewingGroup": 27020,
+   "viewingGroups": [
+    27020
+   ],
+   "textViewingGroup": 21,
+   "viewingGroupLayer": "3a",
+   "displayMode": "StandardDisplay",
+   "textViewingGroupLayer": "102a"
+  },
+  "BCNLAT": {
+   "features": [
+    "LateralBeacon"
+   ],
+   "viewingGroup": 27020,
+   "viewingGroups": [
+    27020
+   ],
+   "textViewingGroup": 21,
+   "viewingGroupLayer": "3a",
+   "displayMode": "StandardDisplay",
+   "textViewingGroupLayer": "102a"
+  },
+  "BCNSAW": {
+   "features": [
+    "SafeWaterBeacon"
+   ],
+   "viewingGroup": 27020,
+   "viewingGroups": [
+    27020
+   ],
+   "textViewingGroup": 21,
+   "viewingGroupLayer": "3a",
+   "displayMode": "StandardDisplay",
+   "textViewingGroupLayer": "102a"
+  },
+  "BCNSPP": {
+   "features": [
+    "SpecialPurposeGeneralBeacon"
+   ],
+   "viewingGroup": 27020,
+   "viewingGroups": [
+    27020
+   ],
+   "textViewingGroup": 21,
+   "viewingGroupLayer": "3a",
+   "displayMode": "StandardDisplay",
+   "textViewingGroupLayer": "102a"
+  },
+  "BERTHS": {
+   "features": [
+    "Berth"
+   ],
+   "viewingGroup": 32440,
+   "viewingGroups": [
+    32440
+   ],
+   "textViewingGroup": 29,
+   "viewingGroupLayer": "18",
+   "displayMode": "OtherInformation",
+   "textViewingGroupLayer": "102a"
+  },
+  "BOYCAR": {
+   "features": [
+    "CardinalBuoy"
+   ],
+   "viewingGroup": 27010,
+   "viewingGroups": [
+    27010
+   ],
+   "textViewingGroup": 21,
+   "viewingGroupLayer": "3a",
+   "displayMode": "StandardDisplay",
+   "textViewingGroupLayer": "102a"
+  },
+  "BOYINB": {
+   "features": [
+    "InstallationBuoy"
+   ],
+   "viewingGroup": 27010,
+   "viewingGroups": [
+    27010
+   ],
+   "textViewingGroup": 21,
+   "viewingGroupLayer": "3a",
+   "displayMode": "StandardDisplay",
+   "textViewingGroupLayer": "102a"
+  },
+  "BOYISD": {
+   "features": [
+    "IsolatedDangerBuoy"
+   ],
+   "viewingGroup": 27010,
+   "viewingGroups": [
+    27010
+   ],
+   "textViewingGroup": 21,
+   "viewingGroupLayer": "3a",
+   "displayMode": "StandardDisplay",
+   "textViewingGroupLayer": "102a"
+  },
+  "BOYLAT": {
+   "features": [
+    "LateralBuoy"
+   ],
+   "viewingGroup": 27010,
+   "viewingGroups": [
+    27010
+   ],
+   "textViewingGroup": 21,
+   "viewingGroupLayer": "3a",
+   "displayMode": "StandardDisplay",
+   "textViewingGroupLayer": "102a"
+  },
+  "BOYSAW": {
+   "features": [
+    "SafeWaterBuoy"
+   ],
+   "viewingGroup": 27010,
+   "viewingGroups": [
+    27010
+   ],
+   "textViewingGroup": 21,
+   "viewingGroupLayer": "3a",
+   "displayMode": "StandardDisplay",
+   "textViewingGroupLayer": "102a"
+  },
+  "BOYSPP": {
+   "features": [
+    "SpecialPurposeGeneralBuoy"
+   ],
+   "viewingGroup": 27010,
+   "viewingGroups": [
+    27010
+   ],
+   "textViewingGroup": 21,
+   "viewingGroupLayer": "3a",
+   "displayMode": "StandardDisplay",
+   "textViewingGroupLayer": "102a"
+  },
+  "BRIDGE": {
+   "features": [
+    "Bridge",
+    "SpanFixed",
+    "SpanOpening"
+   ],
+   "viewingGroup": 12210,
+   "viewingGroups": [
+    12210
+   ],
+   "textViewingGroup": 26,
+   "viewingGroupLayer": "1",
+   "displayMode": "DisplayBase",
+   "textViewingGroupLayer": "102a"
+  },
+  "BUAARE": {
+   "features": [
+    "BuiltUpArea"
+   ],
+   "viewingGroup": 22240,
+   "viewingGroups": [
+    12410,
+    22240
+   ],
+   "textViewingGroup": 26,
+   "viewingGroupLayer": "3a",
+   "displayMode": "StandardDisplay",
+   "textViewingGroupLayer": "102a"
+  },
+  "BUISGL": {
+   "features": [
+    "Building"
+   ],
+   "viewingGroup": 22220,
+   "viewingGroups": [
+    12200,
+    22220,
+    32220
+   ],
+   "textViewingGroup": 26,
+   "viewingGroupLayer": "3a",
+   "displayMode": "StandardDisplay",
+   "textViewingGroupLayer": "102a"
+  },
+  "CANALS": {
+   "features": [
+    "Canal"
+   ],
+   "viewingGroup": 12420,
+   "viewingGroups": [
+    12420
+   ],
+   "textViewingGroup": 26,
+   "viewingGroupLayer": "1",
+   "displayMode": "DisplayBase",
+   "textViewingGroupLayer": "102a"
+  },
+  "CAUSWY": {
+   "features": [
+    "Causeway"
+   ],
+   "viewingGroup": 22010,
+   "viewingGroups": [
+    22010
+   ],
+   "viewingGroupLayer": "2",
+   "displayMode": "StandardDisplay"
+  },
+  "CBLARE": {
+   "features": [
+    "CableArea"
+   ],
+   "viewingGroup": 34030,
+   "viewingGroups": [
+    34030
+   ],
+   "viewingGroupLayer": "12",
+   "displayMode": "OtherInformation"
+  },
+  "CBLOHD": {
+   "features": [
+    "CableOverhead"
+   ],
+   "viewingGroup": 12210,
+   "viewingGroups": [
+    12210
+   ],
+   "textViewingGroup": 11,
+   "viewingGroupLayer": "1",
+   "displayMode": "DisplayBase",
+   "textViewingGroupLayer": "101"
+  },
+  "CBLSUB": {
+   "features": [
+    "CableSubmarine"
+   ],
+   "viewingGroup": 34070,
+   "viewingGroups": [
+    24010,
+    34070
+   ],
+   "viewingGroupLayer": "12",
+   "displayMode": "OtherInformation"
+  },
+  "CGUSTA": {
+   "features": [
+    "CoastGuardStation"
+   ],
+   "viewingGroup": 38030,
+   "viewingGroups": [
+    38030
+   ],
+   "viewingGroupLayer": "18",
+   "displayMode": "OtherInformation"
+  },
+  "CHKPNT": {
+   "features": [
+    "Checkpoint"
+   ],
+   "viewingGroup": 32410,
+   "viewingGroups": [
+    32410
+   ],
+   "viewingGroupLayer": "18",
+   "displayMode": "OtherInformation"
+  },
+  "COALNE": {
+   "features": [
+    "Coastline"
+   ],
+   "viewingGroup": 12410,
+   "viewingGroups": [
+    12410
+   ],
+   "viewingGroupLayer": "1",
+   "displayMode": "DisplayBase"
+  },
+  "CONVYR": {
+   "features": [
+    "Conveyor"
+   ],
+   "viewingGroup": 12210,
+   "viewingGroups": [
+    12210
+   ],
+   "textViewingGroup": 11,
+   "viewingGroupLayer": "1",
+   "displayMode": "DisplayBase",
+   "textViewingGroupLayer": "101"
+  },
+  "CONZNE": {
+   "features": [
+    "ContiguousZone"
+   ],
+   "viewingGroup": 36050,
+   "viewingGroups": [
+    36050
+   ],
+   "viewingGroupLayer": "18",
+   "displayMode": "OtherInformation"
+  },
+  "COSARE": {
+   "features": [
+    "ContinentalShelfArea"
+   ],
+   "viewingGroup": 36010,
+   "viewingGroups": [
+    36010
+   ],
+   "viewingGroupLayer": "18",
+   "displayMode": "OtherInformation"
+  },
+  "CRANES": {
+   "features": [
+    "Crane"
+   ],
+   "viewingGroup": 32440,
+   "viewingGroups": [
+    12200,
+    22220,
+    32440
+   ],
+   "viewingGroupLayer": "18",
+   "displayMode": "OtherInformation"
+  },
+  "CTNARE": {
+   "features": [
+    "DiscolouredWater",
+    "CautionArea"
+   ],
+   "viewingGroup": 26150,
+   "viewingGroups": [
+    26150
+   ],
+   "viewingGroupLayer": "7",
+   "displayMode": "StandardDisplay"
+  },
+  "CTSARE": {
+   "features": [
+    "CargoTranshipmentArea"
+   ],
+   "viewingGroup": 26250,
+   "viewingGroups": [
+    26250
+   ],
+   "viewingGroupLayer": "4",
+   "displayMode": "StandardDisplay"
+  },
+  "CURENT": {
+   "features": [
+    "CurrentNonGravitational"
+   ],
+   "viewingGroup": 33060,
+   "viewingGroups": [
+    33060
+   ],
+   "textViewingGroup": 30,
+   "viewingGroupLayer": "17",
+   "displayMode": "OtherInformation",
+   "textViewingGroupLayer": "102c"
+  },
+  "CUSZNE": {
+   "features": [
+    "CustomZone"
+   ],
+   "viewingGroup": 36020,
+   "viewingGroups": [
+    36020
+   ],
+   "viewingGroupLayer": "18",
+   "displayMode": "OtherInformation"
+  },
+  "C_AGGR": {
+   "features": [
+    "IslandGroup",
+    "MooringTrot",
+    "RangeSystem",
+    "FairwaySystem",
+    "TwoWayRoute",
+    "DeepWaterRoute",
+    "TrafficSeparationScheme",
+    "ArchipelagicSeaLane"
+   ],
+   "viewingGroup": 21060,
+   "viewingGroups": [
+    12010,
+    21010,
+    21060,
+    25010,
+    26050
+   ],
+   "textViewingGroup": 21,
+   "viewingGroupLayer": "10",
+   "displayMode": "StandardDisplay",
+   "textViewingGroupLayer": "102a"
+  },
+  "DAMCON": {
+   "features": [
+    "Dam"
+   ],
+   "viewingGroup": 12410,
+   "viewingGroups": [
+    12410,
+    22010
+   ],
+   "viewingGroupLayer": "1",
+   "displayMode": "DisplayBase"
+  },
+  "DAYMAR": {
+   "features": [
+    "Daymark"
+   ],
+   "viewingGroup": 27025,
+   "viewingGroups": [
+    27025
+   ],
+   "textViewingGroup": 21,
+   "viewingGroupLayer": "3a",
+   "displayMode": "StandardDisplay",
+   "textViewingGroupLayer": "102a"
+  },
+  "DEPARE": {
+   "features": [
+    "DepthArea"
+   ],
+   "viewingGroup": 13030,
+   "viewingGroups": [
+    13030
+   ],
+   "viewingGroupLayer": "1",
+   "displayMode": "DisplayBase"
+  },
+  "DEPCNT": {
+   "features": [
+    "DepthContour"
+   ],
+   "viewingGroup": 33020,
+   "viewingGroups": [
+    33020
+   ],
+   "textViewingGroup": 90031,
+   "viewingGroupLayer": "15",
+   "displayMode": "OtherInformation",
+   "textViewingGroupLayer": "930"
+  },
+  "DISMAR": {
+   "features": [
+    "DistanceMark"
+   ],
+   "viewingGroup": 27030,
+   "viewingGroups": [
+    27030
+   ],
+   "textViewingGroup": 21,
+   "viewingGroupLayer": "3a",
+   "displayMode": "StandardDisplay",
+   "textViewingGroupLayer": "102a"
+  },
+  "DMPGRD": {
+   "features": [
+    "DumpingGround"
+   ],
+   "viewingGroup": 26240,
+   "viewingGroups": [
+    26240
+   ],
+   "viewingGroupLayer": "4",
+   "displayMode": "StandardDisplay"
+  },
+  "DOCARE": {
+   "features": [
+    "DockArea"
+   ],
+   "viewingGroup": 22010,
+   "viewingGroups": [
+    22010
+   ],
+   "textViewingGroup": 26,
+   "viewingGroupLayer": "2",
+   "displayMode": "StandardDisplay",
+   "textViewingGroupLayer": "102a"
+  },
+  "DRGARE": {
+   "features": [
+    "DredgedArea"
+   ],
+   "viewingGroup": 13030,
+   "viewingGroups": [
+    13030
+   ],
+   "textViewingGroup": 11,
+   "viewingGroupLayer": "1",
+   "displayMode": "DisplayBase",
+   "textViewingGroupLayer": "101"
+  },
+  "DRYDOC": {
+   "features": [
+    "DryDock"
+   ],
+   "viewingGroup": 32440,
+   "viewingGroups": [
+    32440
+   ],
+   "viewingGroupLayer": "18",
+   "displayMode": "OtherInformation"
+  },
+  "DWRTCL": {
+   "features": [
+    "DeepWaterRouteCentreline"
+   ],
+   "viewingGroup": 25010,
+   "viewingGroups": [
+    25010
+   ],
+   "textViewingGroup": 11,
+   "viewingGroupLayer": "8",
+   "displayMode": "StandardDisplay",
+   "textViewingGroupLayer": "101"
+  },
+  "DWRTPT": {
+   "features": [
+    "DeepWaterRoutePart"
+   ],
+   "viewingGroup": 25010,
+   "viewingGroups": [
+    25010
+   ],
+   "viewingGroupLayer": "8",
+   "displayMode": "StandardDisplay"
+  },
+  "DYKCON": {
+   "features": [
+    "Dyke"
+   ],
+   "viewingGroup": 22010,
+   "viewingGroups": [
+    22010,
+    22210
+   ],
+   "viewingGroupLayer": "2",
+   "displayMode": "StandardDisplay"
+  },
+  "EXEZNE": {
+   "features": [
+    "ExclusiveEconomicZone"
+   ],
+   "viewingGroup": 36050,
+   "viewingGroups": [
+    36050
+   ],
+   "viewingGroupLayer": "18",
+   "displayMode": "OtherInformation"
+  },
+  "FAIRWY": {
+   "features": [
+    "Fairway"
+   ],
+   "viewingGroup": 26050,
+   "viewingGroups": [
+    26050
+   ],
+   "textViewingGroup": 26,
+   "viewingGroupLayer": "4",
+   "displayMode": "StandardDisplay",
+   "textViewingGroupLayer": "102a"
+  },
+  "FERYRT": {
+   "features": [
+    "FerryRoute"
+   ],
+   "viewingGroup": 25030,
+   "viewingGroups": [
+    25030
+   ],
+   "viewingGroupLayer": "8",
+   "displayMode": "StandardDisplay"
+  },
+  "FLODOC": {
+   "features": [
+    "FloatingDock"
+   ],
+   "viewingGroup": 12410,
+   "viewingGroups": [
+    12410
+   ],
+   "viewingGroupLayer": "1",
+   "displayMode": "DisplayBase"
+  },
+  "FNCLNE": {
+   "features": [
+    "FenceWall"
+   ],
+   "viewingGroup": 22220,
+   "viewingGroups": [
+    22220,
+    32220
+   ],
+   "viewingGroupLayer": "3a",
+   "displayMode": "StandardDisplay"
+  },
+  "FOGSIG": {
+   "features": [
+    "FogSignal"
+   ],
+   "viewingGroup": 27080,
+   "viewingGroups": [
+    27080
+   ],
+   "textViewingGroup": 23,
+   "viewingGroupLayer": "3a",
+   "displayMode": "StandardDisplay",
+   "textViewingGroupLayer": "102b"
+  },
+  "FORSTC": {
+   "features": [
+    "FortifiedStructure"
+   ],
+   "viewingGroup": 32220,
+   "viewingGroups": [
+    12200,
+    22220,
+    32220
+   ],
+   "viewingGroupLayer": "18",
+   "displayMode": "OtherInformation"
+  },
+  "FRPARE": {
+   "features": [
+    "FreePortArea"
+   ],
+   "viewingGroup": 36020,
+   "viewingGroups": [
+    36020
+   ],
+   "viewingGroupLayer": "18",
+   "displayMode": "OtherInformation"
+  },
+  "FSHFAC": {
+   "features": [
+    "FishingFacility"
+   ],
+   "viewingGroup": 26210,
+   "viewingGroups": [
+    26210
+   ],
+   "viewingGroupLayer": "10",
+   "displayMode": "StandardDisplay"
+  },
+  "FSHGRD": {
+   "features": [
+    "FishingGround"
+   ],
+   "viewingGroup": 26210,
+   "viewingGroups": [
+    26210
+   ],
+   "viewingGroupLayer": "10",
+   "displayMode": "StandardDisplay"
+  },
+  "FSHZNE": {
+   "features": [
+    "FisheryZone"
+   ],
+   "viewingGroup": 36040,
+   "viewingGroups": [
+    36040
+   ],
+   "viewingGroupLayer": "18",
+   "displayMode": "OtherInformation"
+  },
+  "GATCON": {
+   "features": [
+    "Gate"
+   ],
+   "viewingGroup": 12410,
+   "viewingGroups": [
+    12410,
+    22010,
+    32440
+   ],
+   "textViewingGroup": 26,
+   "viewingGroupLayer": "1",
+   "displayMode": "DisplayBase",
+   "textViewingGroupLayer": "102a"
+  },
+  "GRIDRN": {
+   "features": [
+    "Gridiron"
+   ],
+   "viewingGroup": 27060,
+   "viewingGroups": [
+    27060
+   ],
+   "viewingGroupLayer": "3a",
+   "displayMode": "StandardDisplay"
+  },
+  "HRBARE": {
+   "features": [
+    "HarbourAreaAdministrative"
+   ],
+   "viewingGroup": 36020,
+   "viewingGroups": [
+    36020
+   ],
+   "viewingGroupLayer": "18",
+   "displayMode": "OtherInformation"
+  },
+  "HRBFAC": {
+   "features": [
+    "HarbourFacility"
+   ],
+   "viewingGroup": 32410,
+   "viewingGroups": [
+    32410
+   ],
+   "viewingGroupLayer": "18",
+   "displayMode": "OtherInformation"
+  },
+  "HULKES": {
+   "features": [
+    "Hulk"
+   ],
+   "viewingGroup": 12410,
+   "viewingGroups": [
+    12410
+   ],
+   "viewingGroupLayer": "1",
+   "displayMode": "DisplayBase"
+  },
+  "ICEARE": {
+   "features": [
+    "IceArea"
+   ],
+   "viewingGroup": 12410,
+   "viewingGroups": [
+    12410
+   ],
+   "viewingGroupLayer": "1",
+   "displayMode": "DisplayBase"
+  },
+  "ISTZNE": {
+   "features": [
+    "InshoreTrafficZone"
+   ],
+   "viewingGroup": 25010,
+   "viewingGroups": [
+    25010
+   ],
+   "viewingGroupLayer": "8",
+   "displayMode": "StandardDisplay"
+  },
+  "LAKARE": {
+   "features": [
+    "Lake"
+   ],
+   "viewingGroup": 22010,
+   "viewingGroups": [
+    22010
+   ],
+   "viewingGroupLayer": "2",
+   "displayMode": "StandardDisplay"
+  },
+  "LAKSHR": {
+   "features": [
+    "Lake"
+   ],
+   "viewingGroup": 22010,
+   "viewingGroups": [
+    22010
+   ],
+   "viewingGroupLayer": "2",
+   "displayMode": "StandardDisplay"
+  },
+  "LIGHTS": {
+   "features": [
+    "LightAllAround",
+    "LightSectored",
+    "LightAirObstruction"
+   ],
+   "viewingGroup": 27070,
+   "viewingGroups": [
+    27070
+   ],
+   "textViewingGroup": 23,
+   "viewingGroupLayer": "3b",
+   "displayMode": "StandardDisplay",
+   "textViewingGroupLayer": "102b"
+  },
+  "LITFLT": {
+   "features": [
+    "LightFloat"
+   ],
+   "viewingGroup": 27010,
+   "viewingGroups": [
+    27010
+   ],
+   "textViewingGroup": 21,
+   "viewingGroupLayer": "3a",
+   "displayMode": "StandardDisplay",
+   "textViewingGroupLayer": "102a"
+  },
+  "LITVES": {
+   "features": [
+    "LightVessel"
+   ],
+   "viewingGroup": 27011,
+   "viewingGroups": [
+    27011
+   ],
+   "textViewingGroup": 21,
+   "viewingGroupLayer": "3a",
+   "displayMode": "StandardDisplay",
+   "textViewingGroupLayer": "102a"
+  },
+  "LNDARE": {
+   "features": [
+    "LandArea"
+   ],
+   "viewingGroup": 12010,
+   "viewingGroups": [
+    12010
+   ],
+   "textViewingGroup": 26,
+   "viewingGroupLayer": "1",
+   "displayMode": "DisplayBase",
+   "textViewingGroupLayer": "102a"
+  },
+  "LNDELV": {
+   "features": [
+    "LandElevation"
+   ],
+   "viewingGroup": 32010,
+   "viewingGroups": [
+    32010
+   ],
+   "textViewingGroup": 28,
+   "viewingGroupLayer": "18",
+   "displayMode": "OtherInformation",
+   "textViewingGroupLayer": "102c"
+  },
+  "LNDMRK": {
+   "features": [
+    "Landmark"
+   ],
+   "viewingGroup": 32220,
+   "viewingGroups": [
+    12200,
+    22220,
+    32220
+   ],
+   "textViewingGroup": 26,
+   "viewingGroupLayer": "18",
+   "displayMode": "OtherInformation",
+   "textViewingGroupLayer": "102a"
+  },
+  "LNDRGN": {
+   "features": [
+    "LandRegion"
+   ],
+   "viewingGroup": 21060,
+   "viewingGroups": [
+    21060
+   ],
+   "textViewingGroup": 26,
+   "viewingGroupLayer": "10",
+   "displayMode": "StandardDisplay",
+   "textViewingGroupLayer": "102a"
+  },
+  "LOCMAG": {
+   "features": [
+    "LocalMagneticAnomaly"
+   ],
+   "viewingGroup": 31080,
+   "viewingGroups": [
+    31080
+   ],
+   "textViewingGroup": 27,
+   "viewingGroupLayer": "14",
+   "displayMode": "OtherInformation",
+   "textViewingGroupLayer": "102c"
+  },
+  "LOGPON": {
+   "features": [
+    "LogPond"
+   ],
+   "viewingGroup": 34050,
+   "viewingGroups": [
+    12410,
+    34050
+   ],
+   "viewingGroupLayer": "13",
+   "displayMode": "OtherInformation"
+  },
+  "LOKBSN": {
+   "features": [
+    "LockBasin"
+   ],
+   "viewingGroup": 22010,
+   "viewingGroups": [
+    22010
+   ],
+   "textViewingGroup": 26,
+   "viewingGroupLayer": "2",
+   "displayMode": "StandardDisplay",
+   "textViewingGroupLayer": "102a"
+  },
+  "MAGVAR": {
+   "features": [
+    "MagneticVariation"
+   ],
+   "viewingGroup": 31080,
+   "viewingGroups": [
+    31080
+   ],
+   "textViewingGroup": 27,
+   "viewingGroupLayer": "14",
+   "displayMode": "OtherInformation",
+   "textViewingGroupLayer": "102c"
+  },
+  "MARCUL": {
+   "features": [
+    "MarineFarmCulture"
+   ],
+   "viewingGroup": 26210,
+   "viewingGroups": [
+    26210
+   ],
+   "viewingGroupLayer": "10",
+   "displayMode": "StandardDisplay"
+  },
+  "MIPARE": {
+   "features": [
+    "MilitaryPracticeArea"
+   ],
+   "viewingGroup": 26040,
+   "viewingGroups": [
+    26040
+   ],
+   "viewingGroupLayer": "5",
+   "displayMode": "StandardDisplay"
+  },
+  "MORFAC": {
+   "features": [
+    "MooringArea",
+    "MooringBuoy"
+   ],
+   "viewingGroup": 26220,
+   "viewingGroups": [
+    26220,
+    27010
+   ],
+   "textViewingGroup": 26,
+   "viewingGroupLayer": "4",
+   "displayMode": "StandardDisplay",
+   "textViewingGroupLayer": "102a"
+  },
+  "M_ACCY": {
+   "features": [
+    "QualityOfNonBathymetricData"
+   ],
+   "viewingGroup": 31010,
+   "viewingGroups": [
+    31010
+   ],
+   "viewingGroupLayer": "18",
+   "displayMode": "OtherInformation"
+  },
+  "M_COVR": {
+   "features": [
+    "DataCoverage"
+   ],
+   "viewingGroup": 31040,
+   "viewingGroups": [
+    31040
+   ],
+   "viewingGroupLayer": "18",
+   "displayMode": "OtherInformation"
+  },
+  "M_CSCL": {
+   "features": [
+    "DataCoverage"
+   ],
+   "viewingGroup": 31040,
+   "viewingGroups": [
+    31040
+   ],
+   "viewingGroupLayer": "18",
+   "displayMode": "OtherInformation"
+  },
+  "M_NPUB": {
+   "features": [
+    "InformationArea"
+   ],
+   "viewingGroup": 31020,
+   "viewingGroups": [
+    31020
+   ],
+   "viewingGroupLayer": "18",
+   "displayMode": "OtherInformation"
+  },
+  "M_NSYS": {
+   "features": [
+    "NavigationalSystemOfMarks",
+    "LocalDirectionOfBuoyage"
+   ],
+   "viewingGroup": 27040,
+   "viewingGroups": [
+    27040
+   ],
+   "viewingGroupLayer": "3a",
+   "displayMode": "StandardDisplay"
+  },
+  "M_SDAT": {
+   "features": [
+    "SoundingDatum"
+   ],
+   "viewingGroup": 31010,
+   "viewingGroups": [
+    31010
+   ],
+   "viewingGroupLayer": "18",
+   "displayMode": "OtherInformation"
+  },
+  "M_SREL": {
+   "features": [
+    "QualityOfSurvey"
+   ],
+   "viewingGroup": 31010,
+   "viewingGroups": [
+    31010
+   ],
+   "viewingGroupLayer": "18",
+   "displayMode": "OtherInformation"
+  },
+  "M_VDAT": {
+   "features": [
+    "VerticalDatumOfData"
+   ],
+   "viewingGroup": 31010,
+   "viewingGroups": [
+    31010
+   ],
+   "viewingGroupLayer": "18",
+   "displayMode": "OtherInformation"
+  },
+  "NAVLNE": {
+   "features": [
+    "NavigationLine"
+   ],
+   "viewingGroup": 25010,
+   "viewingGroups": [
+    25010
+   ],
+   "textViewingGroup": 11,
+   "viewingGroupLayer": "8",
+   "displayMode": "StandardDisplay",
+   "textViewingGroupLayer": "101"
+  },
+  "NEWOBJ": {
+   "features": [
+    "VirtualAISAidToNavigation"
+   ],
+   "viewingGroup": 27240,
+   "viewingGroups": [
+    21020,
+    27240
+   ],
+   "viewingGroupLayer": "3",
+   "displayMode": "StandardDisplay"
+  },
+  "OBSTRN": {
+   "features": [
+    "Obstruction"
+   ],
+   "viewingGroup": 12410,
+   "viewingGroups": [
+    12410,
+    14020,
+    34050,
+    34051
+   ],
+   "viewingGroupLayer": "1",
+   "displayMode": "DisplayBase"
+  },
+  "OFSPLF": {
+   "features": [
+    "OffshorePlatform"
+   ],
+   "viewingGroup": 12210,
+   "viewingGroups": [
+    12210
+   ],
+   "textViewingGroup": 21,
+   "viewingGroupLayer": "1",
+   "displayMode": "DisplayBase",
+   "textViewingGroupLayer": "102a"
+  },
+  "OILBAR": {
+   "features": [
+    "OilBarrier"
+   ],
+   "viewingGroup": 12410,
+   "viewingGroups": [
+    12410
+   ],
+   "viewingGroupLayer": "1",
+   "displayMode": "DisplayBase"
+  },
+  "OSPARE": {
+   "features": [
+    "OffshoreProductionArea"
+   ],
+   "viewingGroup": 26040,
+   "viewingGroups": [
+    26040
+   ],
+   "viewingGroupLayer": "5",
+   "displayMode": "StandardDisplay"
+  },
+  "PILBOP": {
+   "features": [
+    "PilotBoardingPlace"
+   ],
+   "viewingGroup": 28010,
+   "viewingGroups": [
+    28010
+   ],
+   "textViewingGroup": 21,
+   "viewingGroupLayer": "10",
+   "displayMode": "StandardDisplay",
+   "textViewingGroupLayer": "102a"
+  },
+  "PILPNT": {
+   "features": [
+    "Pile"
+   ],
+   "viewingGroup": 12410,
+   "viewingGroups": [
+    12410
+   ],
+   "viewingGroupLayer": "1",
+   "displayMode": "DisplayBase"
+  },
+  "PIPARE": {
+   "features": [
+    "SubmarinePipelineArea"
+   ],
+   "viewingGroup": 34030,
+   "viewingGroups": [
+    34030
+   ],
+   "viewingGroupLayer": "12",
+   "displayMode": "OtherInformation"
+  },
+  "PIPOHD": {
+   "features": [
+    "PipelineOverhead"
+   ],
+   "viewingGroup": 12210,
+   "viewingGroups": [
+    12210
+   ],
+   "textViewingGroup": 11,
+   "viewingGroupLayer": "1",
+   "displayMode": "DisplayBase",
+   "textViewingGroupLayer": "101"
+  },
+  "PIPSOL": {
+   "features": [
+    "PipelineSubmarineOnLand"
+   ],
+   "viewingGroup": 34070,
+   "viewingGroups": [
+    34070
+   ],
+   "viewingGroupLayer": "12",
+   "displayMode": "OtherInformation"
+  },
+  "PONTON": {
+   "features": [
+    "Pontoon"
+   ],
+   "viewingGroup": 12410,
+   "viewingGroups": [
+    12410
+   ],
+   "viewingGroupLayer": "1",
+   "displayMode": "DisplayBase"
+  },
+  "PRCARE": {
+   "features": [
+    "PrecautionaryArea"
+   ],
+   "viewingGroup": 25010,
+   "viewingGroups": [
+    25010
+   ],
+   "viewingGroupLayer": "8",
+   "displayMode": "StandardDisplay"
+  },
+  "PRDARE": {
+   "features": [
+    "ProductionStorageArea"
+   ],
+   "viewingGroup": 32270,
+   "viewingGroups": [
+    22220,
+    32270
+   ],
+   "viewingGroupLayer": "18",
+   "displayMode": "OtherInformation"
+  },
+  "PYLONS": {
+   "features": [
+    "PylonBridgeSupport"
+   ],
+   "viewingGroup": 12210,
+   "viewingGroups": [
+    12210
+   ],
+   "viewingGroupLayer": "1",
+   "displayMode": "DisplayBase"
+  },
+  "RADLNE": {
+   "features": [
+    "RadarLine"
+   ],
+   "viewingGroup": 25040,
+   "viewingGroups": [
+    25040
+   ],
+   "textViewingGroup": 11,
+   "viewingGroupLayer": "8",
+   "displayMode": "StandardDisplay",
+   "textViewingGroupLayer": "101"
+  },
+  "RADRFL": {
+   "features": [
+    "RadarReflector"
+   ],
+   "viewingGroup": 27230,
+   "viewingGroups": [
+    27230
+   ],
+   "viewingGroupLayer": "3a",
+   "displayMode": "StandardDisplay"
+  },
+  "RADRNG": {
+   "features": [
+    "RadarRange"
+   ],
+   "viewingGroup": 25040,
+   "viewingGroups": [
+    25040
+   ],
+   "viewingGroupLayer": "8",
+   "displayMode": "StandardDisplay"
+  },
+  "RADSTA": {
+   "features": [
+    "RadarStation"
+   ],
+   "viewingGroup": 38010,
+   "viewingGroups": [
+    38010
+   ],
+   "textViewingGroup": 11,
+   "viewingGroupLayer": "18",
+   "displayMode": "OtherInformation",
+   "textViewingGroupLayer": "101"
+  },
+  "RAILWY": {
+   "features": [
+    "Railway"
+   ],
+   "viewingGroup": 32250,
+   "viewingGroups": [
+    32250
+   ],
+   "viewingGroupLayer": "18",
+   "displayMode": "OtherInformation"
+  },
+  "RAPIDS": {
+   "features": [
+    "Rapids"
+   ],
+   "viewingGroup": 32050,
+   "viewingGroups": [
+    32050
+   ],
+   "viewingGroupLayer": "18",
+   "displayMode": "OtherInformation"
+  },
+  "RCRTCL": {
+   "features": [
+    "RecommendedRouteCentreline"
+   ],
+   "viewingGroup": 25020,
+   "viewingGroups": [
+    25020
+   ],
+   "textViewingGroup": 11,
+   "viewingGroupLayer": "8",
+   "displayMode": "StandardDisplay",
+   "textViewingGroupLayer": "101"
+  },
+  "RCTLPT": {
+   "features": [
+    "RecommendedTrafficLanePart"
+   ],
+   "viewingGroup": 25020,
+   "viewingGroups": [
+    25020
+   ],
+   "viewingGroupLayer": "8",
+   "displayMode": "StandardDisplay"
+  },
+  "RDOCAL": {
+   "features": [
+    "RadioCallingInPoint"
+   ],
+   "viewingGroup": 25060,
+   "viewingGroups": [
+    25060
+   ],
+   "textViewingGroup": 21,
+   "viewingGroupLayer": "8",
+   "displayMode": "StandardDisplay",
+   "textViewingGroupLayer": "102a"
+  },
+  "RDOSTA": {
+   "features": [
+    "RadioStation"
+   ],
+   "viewingGroup": 38010,
+   "viewingGroups": [
+    38010
+   ],
+   "viewingGroupLayer": "18",
+   "displayMode": "OtherInformation"
+  },
+  "RECTRC": {
+   "features": [
+    "RecommendedTrack"
+   ],
+   "viewingGroup": 25020,
+   "viewingGroups": [
+    25020
+   ],
+   "textViewingGroup": 11,
+   "viewingGroupLayer": "8",
+   "displayMode": "StandardDisplay",
+   "textViewingGroupLayer": "101"
+  },
+  "RESARE": {
+   "features": [
+    "RestrictedArea"
+   ],
+   "viewingGroup": 26010,
+   "viewingGroups": [
+    26010
+   ],
+   "viewingGroupLayer": "5",
+   "displayMode": "StandardDisplay"
+  },
+  "RETRFL": {
+   "features": [
+    "Retroreflector"
+   ],
+   "viewingGroup": 27080,
+   "viewingGroups": [
+    27080
+   ],
+   "viewingGroupLayer": "3a",
+   "displayMode": "StandardDisplay"
+  },
+  "RIVERS": {
+   "features": [
+    "River"
+   ],
+   "viewingGroup": 12420,
+   "viewingGroups": [
+    12420
+   ],
+   "viewingGroupLayer": "1",
+   "displayMode": "DisplayBase"
+  },
+  "ROADWY": {
+   "features": [
+    "Road"
+   ],
+   "viewingGroup": 32250,
+   "viewingGroups": [
+    32250
+   ],
+   "viewingGroupLayer": "18",
+   "displayMode": "OtherInformation"
+  },
+  "RSCSTA": {
+   "features": [
+    "RescueStation"
+   ],
+   "viewingGroup": 38030,
+   "viewingGroups": [
+    38030
+   ],
+   "viewingGroupLayer": "18",
+   "displayMode": "OtherInformation"
+  },
+  "RTPBCN": {
+   "features": [
+    "RadarTransponderBeacon"
+   ],
+   "viewingGroup": 27210,
+   "viewingGroups": [
+    27210
+   ],
+   "viewingGroupLayer": "3a",
+   "displayMode": "StandardDisplay"
+  },
+  "RUNWAY": {
+   "features": [
+    "Runway"
+   ],
+   "viewingGroup": 32240,
+   "viewingGroups": [
+    32240
+   ],
+   "viewingGroupLayer": "18",
+   "displayMode": "OtherInformation"
+  },
+  "SBDARE": {
+   "features": [
+    "SeabedArea"
+   ],
+   "viewingGroup": 34010,
+   "viewingGroups": [
+    34010
+   ],
+   "textViewingGroup": 25,
+   "viewingGroupLayer": "16",
+   "displayMode": "OtherInformation",
+   "textViewingGroupLayer": "102c"
+  },
+  "SEAARE": {
+   "features": [
+    "SeaAreaNamedWaterArea"
+   ],
+   "viewingGroup": 21060,
+   "viewingGroups": [
+    21060
+   ],
+   "textViewingGroup": 26,
+   "viewingGroupLayer": "10",
+   "displayMode": "StandardDisplay",
+   "textViewingGroupLayer": "102a"
+  },
+  "SILTNK": {
+   "features": [
+    "SiloTank"
+   ],
+   "viewingGroup": 32220,
+   "viewingGroups": [
+    12200,
+    22220,
+    32220
+   ],
+   "viewingGroupLayer": "18",
+   "displayMode": "OtherInformation"
+  },
+  "SISTAT": {
+   "features": [
+    "SignalStationTraffic"
+   ],
+   "viewingGroup": 28020,
+   "viewingGroups": [
+    28020
+   ],
+   "viewingGroupLayer": "10",
+   "displayMode": "StandardDisplay"
+  },
+  "SISTAW": {
+   "features": [
+    "SignalStationWarning"
+   ],
+   "viewingGroup": 28020,
+   "viewingGroups": [
+    28020
+   ],
+   "viewingGroupLayer": "10",
+   "displayMode": "StandardDisplay"
+  },
+  "SLCONS": {
+   "features": [
+    "ShorelineConstruction"
+   ],
+   "viewingGroup": 12410,
+   "viewingGroups": [
+    12410
+   ],
+   "textViewingGroup": 26,
+   "viewingGroupLayer": "1",
+   "displayMode": "DisplayBase",
+   "textViewingGroupLayer": "102a"
+  },
+  "SLOGRD": {
+   "features": [
+    "SlopingGround"
+   ],
+   "viewingGroup": 32010,
+   "viewingGroups": [
+    32010
+   ],
+   "viewingGroupLayer": "18",
+   "displayMode": "OtherInformation"
+  },
+  "SLOTOP": {
+   "features": [
+    "SlopeTopline"
+   ],
+   "viewingGroup": 22210,
+   "viewingGroups": [
+    22210,
+    32010,
+    33020
+   ],
+   "viewingGroupLayer": "3a",
+   "displayMode": "StandardDisplay"
+  },
+  "SMCFAC": {
+   "features": [
+    "SmallCraftFacility"
+   ],
+   "viewingGroup": 38210,
+   "viewingGroups": [
+    38210
+   ],
+   "viewingGroupLayer": "18",
+   "displayMode": "OtherInformation"
+  },
+  "SNDWAV": {
+   "features": [
+    "Sandwave"
+   ],
+   "viewingGroup": 24010,
+   "viewingGroups": [
+    24010
+   ],
+   "viewingGroupLayer": "10",
+   "displayMode": "StandardDisplay"
+  },
+  "SOUNDG": {
+   "features": [
+    "Sounding"
+   ],
+   "viewingGroup": 33010,
+   "viewingGroups": [
+    33010
+   ],
+   "viewingGroupLayer": "11",
+   "displayMode": "OtherInformation"
+  },
+  "SPLARE": {
+   "features": [
+    "SeaplaneLandingArea"
+   ],
+   "viewingGroup": 26040,
+   "viewingGroups": [
+    26040
+   ],
+   "viewingGroupLayer": "5",
+   "displayMode": "StandardDisplay"
+  },
+  "SPRING": {
+   "features": [
+    "Spring"
+   ],
+   "viewingGroup": 34020,
+   "viewingGroups": [
+    34020
+   ],
+   "viewingGroupLayer": "16",
+   "displayMode": "OtherInformation"
+  },
+  "STSLNE": {
+   "features": [
+    "StraightTerritorialSeaBaseline"
+   ],
+   "viewingGroup": 36050,
+   "viewingGroups": [
+    36050
+   ],
+   "viewingGroupLayer": "18",
+   "displayMode": "OtherInformation"
+  },
+  "SUBTLN": {
+   "features": [
+    "SubmarineTransitLane"
+   ],
+   "viewingGroup": 26040,
+   "viewingGroups": [
+    26040
+   ],
+   "viewingGroupLayer": "5",
+   "displayMode": "StandardDisplay"
+  },
+  "TESARE": {
+   "features": [
+    "TerritorialSeaArea"
+   ],
+   "viewingGroup": 36050,
+   "viewingGroups": [
+    36050
+   ],
+   "viewingGroupLayer": "18",
+   "displayMode": "OtherInformation"
+  },
+  "TIDEWY": {
+   "features": [
+    "Tideway"
+   ],
+   "viewingGroup": 32070,
+   "viewingGroups": [
+    32070
+   ],
+   "textViewingGroup": 25,
+   "viewingGroupLayer": "18",
+   "displayMode": "OtherInformation",
+   "textViewingGroupLayer": "102c"
+  },
+  "TOPMAR": {
+   "features": [],
+   "viewingGroup": 27010,
+   "note": "topmarks are drawn with their buoy or beacon (TOPMAR02)",
+   "viewingGroups": [
+    27010
+   ],
+   "viewingGroupLayer": "3a",
+   "displayMode": "StandardDisplay"
+  },
+  "TSELNE": {
+   "features": [
+    "SeparationZoneOrLine"
+   ],
+   "viewingGroup": 25010,
+   "viewingGroups": [
+    25010
+   ],
+   "viewingGroupLayer": "8",
+   "displayMode": "StandardDisplay"
+  },
+  "TSEZNE": {
+   "features": [
+    "SeparationZoneOrLine"
+   ],
+   "viewingGroup": 25010,
+   "viewingGroups": [
+    25010
+   ],
+   "viewingGroupLayer": "8",
+   "displayMode": "StandardDisplay"
+  },
+  "TSSBND": {
+   "features": [
+    "TrafficSeparationSchemeBoundary"
+   ],
+   "viewingGroup": 25010,
+   "viewingGroups": [
+    25010
+   ],
+   "viewingGroupLayer": "8",
+   "displayMode": "StandardDisplay"
+  },
+  "TSSCRS": {
+   "features": [
+    "TrafficSeparationSchemeCrossing"
+   ],
+   "viewingGroup": 25010,
+   "viewingGroups": [
+    25010
+   ],
+   "viewingGroupLayer": "8",
+   "displayMode": "StandardDisplay"
+  },
+  "TSSLPT": {
+   "features": [
+    "TrafficSeparationSchemeLanePart"
+   ],
+   "viewingGroup": 25010,
+   "viewingGroups": [
+    25010
+   ],
+   "textViewingGroup": 24,
+   "viewingGroupLayer": "8",
+   "displayMode": "StandardDisplay",
+   "textViewingGroupLayer": "102c"
+  },
+  "TSSRON": {
+   "features": [
+    "TrafficSeparationSchemeRoundabout"
+   ],
+   "viewingGroup": 25010,
+   "viewingGroups": [
+    25010
+   ],
+   "viewingGroupLayer": "8",
+   "displayMode": "StandardDisplay"
+  },
+  "TS_FEB": {
+   "features": [
+    "TidalStreamFloodEbb"
+   ],
+   "viewingGroup": 33060,
+   "viewingGroups": [
+    33060
+   ],
+   "textViewingGroup": 30,
+   "viewingGroupLayer": "17",
+   "displayMode": "OtherInformation",
+   "textViewingGroupLayer": "102c"
+  },
+  "TS_PAD": {
+   "features": [
+    "TidalStreamPanelData"
+   ],
+   "viewingGroup": 33060,
+   "viewingGroups": [
+    33060
+   ],
+   "viewingGroupLayer": "17",
+   "displayMode": "OtherInformation"
+  },
+  "TUNNEL": {
+   "features": [
+    "Tunnel"
+   ],
+   "viewingGroup": 32250,
+   "viewingGroups": [
+    32250
+   ],
+   "textViewingGroup": 26,
+   "viewingGroupLayer": "18",
+   "displayMode": "OtherInformation",
+   "textViewingGroupLayer": "102a"
+  },
+  "TWRTPT": {
+   "features": [
+    "TwoWayRoutePart"
+   ],
+   "viewingGroup": 25010,
+   "viewingGroups": [
+    25010
+   ],
+   "viewingGroupLayer": "8",
+   "displayMode": "StandardDisplay"
+  },
+  "UNSARE": {
+   "features": [
+    "UnsurveyedArea"
+   ],
+   "viewingGroup": 11050,
+   "viewingGroups": [
+    11050
+   ],
+   "viewingGroupLayer": "1",
+   "displayMode": "DisplayBase"
+  },
+  "UWTROC": {
+   "features": [
+    "UnderwaterAwashRock"
+   ],
+   "viewingGroup": 34050,
+   "viewingGroups": [
+    34050
+   ],
+   "viewingGroupLayer": "13",
+   "displayMode": "OtherInformation"
+  },
+  "VEGATN": {
+   "features": [
+    "Vegetation"
+   ],
+   "viewingGroup": 32030,
+   "viewingGroups": [
+    32030
+   ],
+   "viewingGroupLayer": "18",
+   "displayMode": "OtherInformation"
+  },
+  "WATFAL": {
+   "features": [
+    "Waterfall"
+   ],
+   "viewingGroup": 32050,
+   "viewingGroups": [
+    32050
+   ],
+   "viewingGroupLayer": "18",
+   "displayMode": "OtherInformation"
+  },
+  "WATTUR": {
+   "features": [
+    "WaterTurbulence"
+   ],
+   "viewingGroup": 33040,
+   "viewingGroups": [
+    33040
+   ],
+   "viewingGroupLayer": "16",
+   "displayMode": "OtherInformation"
+  },
+  "WEDKLP": {
+   "features": [
+    "WeedKelp"
+   ],
+   "viewingGroup": 34020,
+   "viewingGroups": [
+    34020
+   ],
+   "viewingGroupLayer": "16",
+   "displayMode": "OtherInformation"
+  },
+  "WRECKS": {
+   "features": [
+    "Wreck"
+   ],
+   "viewingGroup": 34050,
+   "viewingGroups": [
+    34050,
+    34051
+   ],
+   "viewingGroupLayer": "13",
+   "displayMode": "OtherInformation"
+  },
+  "PLY": {
+   "features": [
+    "DataCoverage"
+   ],
+   "viewingGroup": 31040,
+   "viewingGroups": [
+    31040
+   ],
+   "viewingGroupLayer": "18",
+   "displayMode": "OtherInformation"
+  }
+ }
+}
