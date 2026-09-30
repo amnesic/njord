@@ -248,12 +248,21 @@ abstract class Layerable(
         )
     }
 
+    /**
+     * Without [symbol], the pattern is read from the feature's `AP`, which preTileEncode sets on
+     * some features only (LNDRGN: marshes and swamps). Those without it are filtered out, or
+     * MapLibre asks for an image named `null` and reports it missing.
+     */
     fun areaLayerWithFillPattern(symbol: Sprite? = null): Layer {
         return Layer(
             id = "${key}_fill_pattern_${++nextId}",
             type = LayerType.FILL,
             sourceLayer = sourceLayer,
-            filter = Filters.eqTypePolyGon,
+            filter = if (symbol == null) {
+                listOf(Filters.all, Filters.eqTypePolyGon, listOf("has", "AP")).json
+            } else {
+                Filters.eqTypePolyGon
+            },
             paint = Paint(
                 fillPattern = symbol?.name?.json ?: listOf("get", "AP").json
             )
