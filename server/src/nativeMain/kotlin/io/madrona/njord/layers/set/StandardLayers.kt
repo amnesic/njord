@@ -263,7 +263,8 @@ class StandardLayers {
         ClearanceLabel("GATCON"),
         Curent(),
 
-        Magvar(),
+        // MAGVAR is not drawn: its area symbols cover whole charts and clutter the display
+//        Magvar(),
 
         // lights
         Litflt(),

@@ -68,8 +68,9 @@ class SeabedMagvarTest {
     }
 
     @Test
-    fun `all four are registered in the standard layers`() {
+    fun `seabed and limits are registered in the standard layers but magnetic variation is not`() {
         val keys = StandardLayers().layers.map { it.key }.toSet()
-        assertTrue(keys.containsAll(listOf("SBDARE", "MAGVAR", "ADMARE", "TESARE")))
+        assertTrue(keys.containsAll(listOf("SBDARE", "ADMARE", "TESARE")))
+        assertTrue("MAGVAR" !in keys)
     }
 }
