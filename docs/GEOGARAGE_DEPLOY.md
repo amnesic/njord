@@ -170,6 +170,44 @@ docker exec njord-postgres-1 psql -U admin -d s57server -c "VACUUM (VERBOSE, ANA
 docker exec njord-postgres-1 psql -U admin -d s57server -c "VACUUM FULL features;"
 ```
 
+## 7. Mises à jour courantes (depuis la 1.4)
+
+Une image par commit, construite sur le serveur (méthode B) : tag `1.4-SNAPSHOT-<commit>` dans
+`~/Development/Njord/docker-compose.yml`. Le front ne change en général pas : pas de rsync.
+
+```bash
+cd ~/Development/Njord/njord && git pull --ff-only origin Test-S-101 && git log --oneline -1
+DOCKER_BUILDKIT=1 docker build --build-arg BUILDKIT_SYNTAX=docker/dockerfile:1 \
+  -f Containerfile -t ghcr.io/amnesic/njord-chart-server:1.4-SNAPSHOT-<commit> . > ../build-<commit>.log 2>&1
+# changer le tag dans ../docker-compose.yml, puis
+cd ~/Development/Njord && docker compose config --quiet && docker compose up -d njord
+docker exec njord-postgres-1 psql -U admin -d s57server -c "ANALYZE charts" -c "ANALYZE features"
+```
+
+**Quoi purger dans le cache nginx (30 jours)** :
+
+| Changement | Purge |
+|---|---|
+| Style seul (`layers()` d'une classe, metadata, filtres) | Les styles : `sudo grep -rl "KEY: .*/v1/style/" /var/cache/nginx/mvt \| sudo xargs -r rm -f` |
+| Contenu des tuiles (`preTileEncode`, requête SQL) ou sprite | Tout : `sudo find /var/cache/nginx/mvt -type f -delete`, puis tuiles lentes un moment |
+
+Après tout déploiement qui change le rendu, enc-wms doit régénérer son cache :
+`cd ~/Development/enc-wms && ./seed.sh --refresh` (vide son `mvt-cache` et régénère les tuiles).
+
+**Limite de charge** : Ktor 3.5.1 en Kotlin/Native n'a que `select()`. Au-delà de 1 024
+descripteurs ouverts, `IllegalStateException: File descriptor … FD_SETSIZE` non rattrapée, njord
+s'arrête (exit 139) et Docker le relance. Arrivé le 2026-09-30 sous un seed d'enc-wms. Protections
+dans nginx : `upstream docker-njord` (`/etc/nginx/nginx.conf`) avec `max_conns=400` et
+`keepalive 32` ; dans les 5 `location` du vhost : `limit_conn njord_per_ip 64`, HTTP/1.1,
+`proxy_cache_lock`, et `proxy_read_timeout` / `proxy_cache_lock_timeout` / `proxy_cache_lock_age`
+à 180 s (des tuiles de petite échelle dépassent 60 s). Journal d'accès :
+`/var/log/nginx/caas-mvt.geogarage.com.access.log`.
+
+Historique : `6f9d1ed` isobathes, `95c41d8` SBDARE/MAGVAR/ADMARE/TESARE en S-101 (purge complète),
+`35820a7` metadata S-101 (styles), `9296bee` motifs `AP` filtrés (styles), tous le 2026-09-30.
+`48645d2` (2026-10-01, autre session) : MAGVAR n'est plus dessiné (symboles de zone envahissants) ;
+changement de style seul, pas encore déployé au 2026-10-02.
+
 ## Retour arrière
 
 La base v3 n'est plus lisible par la 1.2. Il faut restaurer la sauvegarde **et** revenir à l'image :
